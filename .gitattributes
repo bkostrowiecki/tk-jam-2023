@@ -1,0 +1,16 @@
+Assets/New[[:space:]]Terrain[[:space:]]2.asset filter=lfs diff=lfs merge=lfs -text
+Assets/New[[:space:]]Terrain[[:space:]]4.asset filter=lfs diff=lfs merge=lfs -text
+Assets/New[[:space:]]Terrain[[:space:]]7.asset filter=lfs diff=lfs merge=lfs -text
+Assets/3D[[:space:]]Models/Buildings/Atlas[[:space:]]Buildings/Atlas[[:space:]]Roughness.png filter=lfs diff=lfs merge=lfs -text
+Assets/3D[[:space:]]Models/Buildings/Atlas[[:space:]]Buildings/Atlas[[:space:]]Normal.png filter=lfs diff=lfs merge=lfs -text
+Assets/3D[[:space:]]Models/Buildings/Atlas[[:space:]]Buildings/Atlas[[:space:]]Metallic.png filter=lfs diff=lfs merge=lfs -text
+Assets/3D[[:space:]]Models/Buildings/Atlas[[:space:]]Buildings/Atlas[[:space:]]Height.png filter=lfs diff=lfs merge=lfs -text
+Assets/3D[[:space:]]Models/Buildings/Atlas[[:space:]]Buildings/Atlas[[:space:]]AO.png filter=lfs diff=lfs merge=lfs -text
+Assets/3D[[:space:]]Models/Buildings/Atlas[[:space:]]Buildings/Atlas[[:space:]]Albedo.png filter=lfs diff=lfs merge=lfs -text
+
+"Assets/Resources/Fonts & Materials/Chinese/NotoSansTC-Bold SDF.asset" filter=lfs diff=lfs merge=lfs -text
+"Assets/Resources/Fonts & Materials/Chinese/NotoSansTC-Medium SDF.asset" filter=lfs diff=lfs merge=lfs -text
+"Assets/Resources/Fonts & Materials/Chinese/**/*.asset" filter=lfs diff=lfs merge=lfs -text
+"Assets/Scenes/MapMagic/MapMagic Test.unity" filter=lfs diff=lfs merge=lfs -text
+"Assets/3D Models/Buildings/Atlas Buildings/Atlas Albedo (2).png" filter=lfs diff=lfs merge=lfs -text
+"Assets/3D Models/Buildings/Atlas Buildings/Atlas Normal (1).png" filter=lfs diff=lfs merge=lfs -text
