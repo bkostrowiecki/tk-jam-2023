@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     public CharacterController characterController;
 
     public GameObject statesContainer;
+    [Header("Input")]
+    public Transform playerRotationBaseTransform;
 
     [Header("Gravity")]
     public float gravity = 10f;

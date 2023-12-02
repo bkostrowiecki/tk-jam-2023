@@ -84,9 +84,12 @@ public class PlayerWalkingState : BasePlayerState
 
     public Vector3 ProjectInputToWorld(Vector3 rawInput)
     {
-        Vector3 inputByCamera = Camera.main.transform.rotation * rawInput;
+        Vector3 inputByCamera = Camera.main.transform.rotation * rawInput.normalized;
 
         Vector3 projectedInputByCamera = Vector3.ProjectOnPlane(inputByCamera, Vector3.up);
+
+        Debug.DrawRay(transform.position, projectedInputByCamera, Color.red);
+
         return projectedInputByCamera;
     }
 
