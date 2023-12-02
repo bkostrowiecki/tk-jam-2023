@@ -28,12 +28,35 @@ public class PlayerWalkingState : BasePlayerState
         var horizontalInput = Input.GetAxisRaw("Horizontal");
         var verticalInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 input = new Vector3(horizontalInput, 0, verticalInput);
+        Vector3 rawInput = new Vector3(horizontalInput, 0, verticalInput);
 
-        Vector3 inputByCamera = Camera.main.transform.rotation * input;
+        Vector3 projectedInputByCamera = ProjectInputToWorld(rawInput);
+
+        HandleAccelerationProgress(rawInput);
+
+        Vector3 goalMovement = projectedInputByCamera == Vector3.zero
+            ? lastGoalMovement
+            : projectedInputByCamera.normalized * speed;
+
+        HandleDirection(projectedInputByCamera, goalMovement);
+
+        float lerpProgress = accelerationCurve.Evaluate(accelerationProgress / accelerationTime);
+        Vector3 movement = Vector3.Lerp(Vector3.zero, goalMovement, lerpProgress);
+
+        playerController.characterController.Move(movement * Time.deltaTime);
+        playerController.characterController.transform.rotation = Quaternion.LookRotation(directionApplied);
+    }
+
+    private static Vector3 ProjectInputToWorld(Vector3 rawInput)
+    {
+        Vector3 inputByCamera = Camera.main.transform.rotation * rawInput;
 
         Vector3 projectedInputByCamera = Vector3.ProjectOnPlane(inputByCamera, Vector3.up);
+        return projectedInputByCamera;
+    }
 
+    private void HandleAccelerationProgress(Vector3 input)
+    {
         if (input.magnitude > 0)
         {
             accelerationProgress += Time.deltaTime;
@@ -44,19 +67,6 @@ public class PlayerWalkingState : BasePlayerState
         }
 
         accelerationProgress = Mathf.Clamp(accelerationProgress, 0f, accelerationTime);
-
-        Vector3 goalMovement = projectedInputByCamera == Vector3.zero
-            ? lastGoalMovement
-            : projectedInputByCamera.normalized * speed;
-
-        float lerpProgress = accelerationCurve.Evaluate(accelerationProgress / accelerationTime);
-
-        HandleDirection(projectedInputByCamera, goalMovement);
-
-        Vector3 movement = Vector3.Lerp(Vector3.zero, goalMovement, lerpProgress);
-
-        playerController.characterController.Move(movement * Time.deltaTime);
-        playerController.characterController.transform.rotation = Quaternion.LookRotation(directionApplied);
     }
 
     void HandleDirection(Vector3 projectedInputByCamera, Vector3 goalMovement)
