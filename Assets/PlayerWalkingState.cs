@@ -11,16 +11,29 @@ public class PlayerWalkingState : BasePlayerState
     public float speed = 3f;
     public float deadZone = 0.2f;
     float lastProjectedInputByCameraTimer;
+    private Vector3 previousDirectionApplied;
     private Vector3 directionApplied;
+    private float directionAppliedTime;
     private Vector3 lastGoalMovement;
     private float accelerationProgress;
     public AnimationCurve accelerationCurve;
+    public float directionLerpTime = 0.25f;
+    float directionAppliedTimer;
+    public AnimationCurve rotationLerpCurve;
 
     void OnGUI()
     {
         GUI.Label(new Rect(10, 10, 120, 120), new GUIContent("Direction applied" + directionApplied.ToString()));
         GUI.Label(new Rect(120, 120, 120, 120), new GUIContent("Acceleration progress " + accelerationProgress.ToString()));
         GUI.Label(new Rect(220, 220, 120, 120), new GUIContent("lastMovementTimer " + lastProjectedInputByCameraTimer.ToString()));
+        GUI.Label(new Rect(120, 320, 120, 120), new GUIContent("previousDirectionApplied " + previousDirectionApplied.ToString()));
+    }
+
+    void Start()
+    {
+        previousDirectionApplied = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+        directionApplied = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+        directionAppliedTimer = Time.time;
     }
 
     void Update()
@@ -44,7 +57,12 @@ public class PlayerWalkingState : BasePlayerState
         Vector3 movement = Vector3.Lerp(Vector3.zero, goalMovement, lerpProgress);
 
         playerController.characterController.Move(movement * Time.deltaTime);
-        playerController.characterController.transform.rotation = Quaternion.LookRotation(directionApplied);
+
+        var rotationLerpProgress = rotationLerpCurve.Evaluate((Time.time - directionAppliedTimer)/directionLerpTime);
+
+        var rotationLerp = Vector3.Lerp(previousDirectionApplied, directionApplied, rotationLerpProgress);
+
+        playerController.characterController.transform.rotation = Quaternion.LookRotation(rotationLerp);
     }
 
     private static Vector3 ProjectInputToWorld(Vector3 rawInput)
@@ -90,7 +108,12 @@ public class PlayerWalkingState : BasePlayerState
 
         if (lastProjectedInputByCameraTimer > directionApplyTime)
         {
-            directionApplied = lastProjectedInputByCamera.normalized;
+            if (lastProjectedInputByCamera.normalized != directionApplied)
+            {
+                previousDirectionApplied = directionApplied;
+                directionApplied = lastProjectedInputByCamera.normalized;
+                directionAppliedTimer = Time.time;
+            }
             lastGoalMovement = goalMovement;
         }
     }
