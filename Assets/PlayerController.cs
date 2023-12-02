@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,15 +13,19 @@ public class PlayerController : MonoBehaviour
     public float gravity = 10f;
     public float maxGravityVelocity = 100f;
     float gravityVelocity;
+    private BasePlayerState[] states;
 
     void Awake()
     {
-        var children = statesContainer.GetComponentsInChildren<BasePlayerState>();
+        states = statesContainer.GetComponentsInChildren<BasePlayerState>(true);
 
-        foreach (var child in children)
+        foreach (var child in states)
         {
             child.playerController = this;
+            child.gameObject.SetActive(false);
         }
+
+        states[0].gameObject.SetActive(true);
     }
 
     public Vector3 AddGravity(Vector3 movement)
@@ -35,5 +40,13 @@ public class PlayerController : MonoBehaviour
         }
 
         return movement + Vector3.down * gravityVelocity;
+    }
+
+    public void ActivateState(BasePlayerState basePlayerState)
+    {
+        foreach (var child in states)
+        {
+            child.gameObject.SetActive(child == basePlayerState);
+        }
     }
 }

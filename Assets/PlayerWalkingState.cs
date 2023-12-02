@@ -21,6 +21,8 @@ public class PlayerWalkingState : BasePlayerState
     float directionAppliedTimer;
     public AnimationCurve rotationLerpCurve;
 
+    public PlayerJumpingState playerJumpingState;
+
     void OnGUI()
     {
         GUI.Label(new Rect(10, 10, 120, 120), new GUIContent("Direction applied" + directionApplied.ToString()));
@@ -42,6 +44,12 @@ public class PlayerWalkingState : BasePlayerState
         var verticalInput = Input.GetAxisRaw("Vertical");
 
         Vector3 rawInput = new Vector3(horizontalInput, 0, verticalInput);
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            playerController.ActivateState(playerJumpingState);
+            playerJumpingState.JumpTorwards(directionApplied);
+        }
 
         Vector3 projectedInputByCamera = ProjectInputToWorld(rawInput);
 
@@ -74,7 +82,7 @@ public class PlayerWalkingState : BasePlayerState
         playerController.characterController.transform.rotation = Quaternion.LookRotation(rotationLerp);
     }
 
-    private static Vector3 ProjectInputToWorld(Vector3 rawInput)
+    public Vector3 ProjectInputToWorld(Vector3 rawInput)
     {
         Vector3 inputByCamera = Camera.main.transform.rotation * rawInput;
 
@@ -96,7 +104,7 @@ public class PlayerWalkingState : BasePlayerState
         accelerationProgress = Mathf.Clamp(accelerationProgress, 0f, accelerationTime);
     }
 
-    void HandleDirection(Vector3 projectedInputByCamera, Vector3 goalMovement)
+    public void HandleDirection(Vector3 projectedInputByCamera, Vector3 goalMovement)
     {
         if (projectedInputByCamera.magnitude > deadZone)
         {
