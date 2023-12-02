@@ -52,13 +52,22 @@ public class PlayerWalkingState : BasePlayerState
             : projectedInputByCamera.normalized * speed;
 
         HandleDirection(projectedInputByCamera, goalMovement);
+        
+        ApplyMovement(goalMovement);
+        ApplyRotation();
+    }
 
+    private void ApplyMovement(Vector3 goalMovement)
+    {
         float lerpProgress = accelerationCurve.Evaluate(accelerationProgress / accelerationTime);
         Vector3 movement = Vector3.Lerp(Vector3.zero, goalMovement, lerpProgress);
 
-        playerController.characterController.Move(movement * Time.deltaTime);
+        playerController.characterController.Move(playerController.AddGravity(movement) * Time.deltaTime);
+    }
 
-        var rotationLerpProgress = rotationLerpCurve.Evaluate((Time.time - directionAppliedTimer)/directionLerpTime);
+    private void ApplyRotation()
+    {
+        var rotationLerpProgress = rotationLerpCurve.Evaluate((Time.time - directionAppliedTimer) / directionLerpTime);
 
         var rotationLerp = Vector3.Lerp(previousDirectionApplied, directionApplied, rotationLerpProgress);
 

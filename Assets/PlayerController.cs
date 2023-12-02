@@ -8,6 +8,11 @@ public class PlayerController : MonoBehaviour
 
     public GameObject statesContainer;
 
+    [Header("Gravity")]
+    public float gravity = 10f;
+    public float maxGravityVelocity = 100f;
+    float gravityVelocity;
+
     void Awake()
     {
         var children = statesContainer.GetComponentsInChildren<BasePlayerState>();
@@ -16,5 +21,19 @@ public class PlayerController : MonoBehaviour
         {
             child.playerController = this;
         }
+    }
+
+    public Vector3 AddGravity(Vector3 movement)
+    {
+        gravityVelocity += gravity;
+
+        gravityVelocity = Mathf.Min(maxGravityVelocity, gravityVelocity);
+
+        if (characterController.isGrounded)
+        {
+            gravityVelocity = -0.2f;
+        }
+
+        return movement + Vector3.down * gravityVelocity;
     }
 }
