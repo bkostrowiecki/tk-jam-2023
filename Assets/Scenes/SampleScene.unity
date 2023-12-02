@@ -823,7 +823,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 0}
   jumpDistance: 4
-  jumpSpeed: 12
+  jumpSpeed: 20
   jumpCurve:
     serializedVersion: 2
     m_Curve:
