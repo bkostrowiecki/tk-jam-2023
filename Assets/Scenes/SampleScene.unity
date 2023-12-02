@@ -489,6 +489,7 @@ GameObject:
   - component: {fileID: 589004520}
   - component: {fileID: 589004519}
   - component: {fileID: 589004518}
+  - component: {fileID: 589004523}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -536,7 +537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 589004518}
   statesContainer: {fileID: 1501270336}
-  gravity: 10
+  gravity: 20
   maxGravityVelocity: 100
 --- !u!23 &589004520
 MeshRenderer:
@@ -605,6 +606,22 @@ Transform:
   - {fileID: 789406950}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &589004523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589004517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e26b4527cef1ec44b3bc0459743006a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealthPoints: 100
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &789406949
 GameObject:
   m_ObjectHideFlags: 0

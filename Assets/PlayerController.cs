@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
     public Vector3 AddGravity(Vector3 movement)
     {
-        gravityVelocity += gravity;
+        gravityVelocity += gravity * Time.deltaTime;
 
         gravityVelocity = Mathf.Min(maxGravityVelocity, gravityVelocity);
 
