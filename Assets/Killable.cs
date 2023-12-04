@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UniRx;
 
 public class OnDamageEvent : UnityEvent<int, int, int>
 {
@@ -18,11 +20,28 @@ public class Killable : MonoBehaviour
     public UnityEvent onDied;
     public OnDamageEvent onDamage = new OnDamageEvent();
 
-    void TakeDamage(BaseDamage damage)
+    BehaviorSubject<int> currentHealthPointsSubject;
+
+    public IObservable<int> CurrentHealthPointsObservable => currentHealthPointsSubject.AsObservable();
+
+    BehaviorSubject<int> maxHealthPointsSubject;
+
+    public IObservable<int> MaxHealthPointsObservable => maxHealthPointsSubject.AsObservable();
+
+    void Awake()
+    {
+        currentHealthPoints = maxHealthPoints;
+        currentHealthPointsSubject = new BehaviorSubject<int>(currentHealthPoints);
+        maxHealthPointsSubject = new BehaviorSubject<int>(maxHealthPoints);
+    }
+
+    public void TakeDamage(BaseDamage damage)
     {
         var damageHealthPoints = damage.CalculateDamage();
         var cachedHealthPoints = currentHealthPoints;
-        currentHealthPoints -= Mathf.Clamp(damageHealthPoints, 0, maxHealthPoints);
+        currentHealthPoints = Mathf.Clamp(currentHealthPoints - damageHealthPoints, 0, maxHealthPoints);
+
+        currentHealthPointsSubject.OnNext(currentHealthPoints);
 
         onDamage?.Invoke(currentHealthPoints, cachedHealthPoints, damageHealthPoints);
 
@@ -30,6 +49,18 @@ public class Killable : MonoBehaviour
         {
             Die();
         }
+    }
+
+    void MaxHealthIncrease(int increment)
+    {
+        maxHealthPoints += increment;
+        maxHealthPointsSubject.OnNext(maxHealthPoints);
+    }
+
+    void SetMaxHealth(int maxHealth)
+    {
+        maxHealthPoints = maxHealth;
+        maxHealthPointsSubject.OnNext(maxHealthPoints);
     }
 
     void Die()
