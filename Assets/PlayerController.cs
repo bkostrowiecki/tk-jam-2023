@@ -1,7 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection.Emit;
+using MoreMountains.Feedbacks;
+using Unity.VisualScripting;
 using UnityEngine;
+
+public class ReactDistance
+{
+    public PlayerReactArea area;
+    public float distance;
+}
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,6 +37,13 @@ public class PlayerController : MonoBehaviour
     [Header("Collectable")]
     public LayerMask collectablesLayerMask;
     float collectablesDetectionRadius = 0.5f;
+
+    [Header("Reactions")]
+    public List<ReactDistance> playerReactAreas = new();
+
+    [Header("Immortality")]
+    public MMF_Player becomeImmortalFeedbacks = new();
+    public float hitTimeImmortality = 0.5f;
 
     void Awake()
     {
@@ -89,6 +105,16 @@ public class PlayerController : MonoBehaviour
         DetectCollectable();
     }
 
+    void LateUpdate()
+    {
+        ResetPossibleReactions();
+    }
+
+    void ResetPossibleReactions()
+    {
+        playerReactAreas.Clear();
+    }
+
     void DetectCollectable()
     {
         var collectablesOverlapping = Physics.OverlapSphere(transform.position, collectablesDetectionRadius, collectablesLayerMask);
@@ -100,6 +126,13 @@ public class PlayerController : MonoBehaviour
             collectable.Collect();
         }
     }
+
+    #if UNITY_EDITOR
+    void OnGUI()
+    {
+        GUI.Label(new Rect(40, 40, 120, 120), new GUIContent(playerReactAreas.ToArray().ToString()));
+    }
+    #endif
 
     void OnDrawGizmos()
     {
@@ -133,6 +166,50 @@ public class PlayerController : MonoBehaviour
     void TakeHellDamage()
     {
         killable.TakeDamage(new HellDamage(killable.maxHealthPoints));
+        MakeImmortalForTime(hitTimeImmortality, 0.1f);
+    }
+
+    public void MakeReactionPossible(PlayerReactArea playerReactArea)
+    {
+        var found = playerReactAreas.Find((item) => item.area == playerReactArea);
+
+        if (found != null)
+        {
+            found.distance = CalculateDistance(playerReactArea.transform.position);
+        }
+        else
+        {
+            var newEntry = new ReactDistance
+            {
+                distance = CalculateDistance(playerReactArea.transform.position),
+                area = playerReactArea
+            };
+
+            playerReactAreas.Add(newEntry);
+        }
+    }
+
+    public void MakeImmortalForTime(float time, float feedbackDelay)
+    {
+        StartCoroutine(MakeImmortalForTimeAsync(time, feedbackDelay));
+    }
+
+    public IEnumerator MakeImmortalForTimeAsync(float time, float feedbackDelay)
+    {
+        killable.enabled = false;
+
+        yield return new WaitForSeconds(feedbackDelay);
+        becomeImmortalFeedbacks?.PlayFeedbacks();
+
+        yield return new WaitForSeconds(time - feedbackDelay);
+
+        becomeImmortalFeedbacks?.StopFeedbacks();
+        killable.enabled = true;
+    }
+
+    float CalculateDistance(Vector3 position)
+    {
+        return (transform.position - position).sqrMagnitude;
     }
 }
 

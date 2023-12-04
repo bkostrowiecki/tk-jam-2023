@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UniRx;
 
+[Serializable]
 public class OnDamageEvent : UnityEvent<int, int, int>
 {
     public int currentHealthPoints;
@@ -17,7 +18,7 @@ public class Killable : MonoBehaviour
 {
     public int maxHealthPoints = 100;
     int currentHealthPoints = 0;
-    public UnityEvent onDied;
+    public UnityEvent onDied = new UnityEvent();
     public OnDamageEvent onDamage = new OnDamageEvent();
 
     BehaviorSubject<int> currentHealthPointsSubject;

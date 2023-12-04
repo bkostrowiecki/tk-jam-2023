@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class BasePlayerState : MonoBehaviour
 {
+    [HideInInspector]
     public PlayerController playerController;
 }
