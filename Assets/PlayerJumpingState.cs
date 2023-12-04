@@ -40,6 +40,8 @@ public class PlayerJumpingState : BasePlayerState
         jumpStartTimer = Time.time;
 
         previousEvaluated = jumpCurve.Evaluate(0f);
+
+        playerController.UseStamina();
     }
 
     void Update()

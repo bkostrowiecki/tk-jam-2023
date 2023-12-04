@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class PlayerWalkingState : BasePlayerState
@@ -23,6 +24,9 @@ public class PlayerWalkingState : BasePlayerState
 
     public PlayerJumpingState playerJumpingState;
 
+    [Header("Stamina")]
+    public MMF_Player cannotUseStaminaFeedbacks;
+
     void OnGUI()
     {
         GUI.Label(new Rect(10, 10, 120, 120), new GUIContent("Direction applied" + directionApplied.ToString()));
@@ -44,12 +48,8 @@ public class PlayerWalkingState : BasePlayerState
         var verticalInput = Input.GetAxisRaw("Vertical");
 
         Vector3 rawInput = new Vector3(horizontalInput, 0, verticalInput);
-
-        if (Input.GetButtonDown("Jump"))
-        {
-            playerController.ActivateState(playerJumpingState);
-            playerJumpingState.JumpTorwards(directionApplied);
-        }
+        
+        HandleJumping();
 
         Vector3 projectedInputByCamera = ProjectInputToWorld(rawInput);
 
@@ -60,9 +60,25 @@ public class PlayerWalkingState : BasePlayerState
             : projectedInputByCamera.normalized * speed;
 
         HandleDirection(projectedInputByCamera, goalMovement);
-        
+
         ApplyMovement(goalMovement);
         ApplyRotation();
+    }
+
+    private void HandleJumping()
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (playerController.CanUseStamina)
+            {
+                playerController.ActivateState(playerJumpingState);
+                playerJumpingState.JumpTorwards(directionApplied);
+            }
+            else
+            {
+                cannotUseStaminaFeedbacks?.PlayFeedbacks();
+            }
+        }
     }
 
     private void ApplyMovement(Vector3 goalMovement)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using MoreMountains.Feedbacks;
+using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -45,6 +46,18 @@ public class PlayerController : MonoBehaviour
     public MMF_Player becomeImmortalFeedbacks = new();
     public float hitTimeImmortality = 0.5f;
 
+    [Header("Stamina")]
+    public int maxStamina = 100;
+    BehaviorSubject<int> maxStaminaSubject;
+    public IObservable<int> MaxStaminaObservable => maxStaminaSubject.AsObservable();
+    int currentStamina = 0;
+    BehaviorSubject<int> currentStaminaSubject;
+    public IObservable<int> CurrentStaminaObservable => currentStaminaSubject.AsObservable();
+    public int staminaJumpUsage = 10;
+    public float fullRegenerationTime = 2.5f;
+    public float regenerationDelay = 0.5f;
+    private float lastStaminaUsageTimer;
+
     void Awake()
     {
         states = statesContainer.GetComponentsInChildren<BasePlayerState>(true);
@@ -59,6 +72,10 @@ public class PlayerController : MonoBehaviour
 
         lastSnapshotTimer = Time.time;
         MakeSnapshot();
+
+        currentStamina = maxStamina;
+        currentStaminaSubject = new BehaviorSubject<int>(currentStamina);
+        maxStaminaSubject = new BehaviorSubject<int>(maxStamina);
     }
 
     public Vector3 AddGravity(Vector3 movement)
@@ -103,6 +120,18 @@ public class PlayerController : MonoBehaviour
         }
 
         DetectCollectable();
+
+        if (lastStaminaUsageTimer + regenerationDelay < Time.time)
+        {
+            var step = (maxStamina / fullRegenerationTime) * Time.deltaTime;
+            IncreaseStamina(step);
+        }
+    }
+
+    void IncreaseStamina(float step)
+    {
+        currentStamina = Mathf.Clamp(Mathf.CeilToInt((float)currentStamina + step), 0, maxStamina);
+        currentStaminaSubject.OnNext(currentStamina);
     }
 
     void LateUpdate()
@@ -166,6 +195,7 @@ public class PlayerController : MonoBehaviour
     void TakeHellDamage()
     {
         killable.TakeDamage(new HellDamage(killable.maxHealthPoints));
+
         MakeImmortalForTime(hitTimeImmortality, 0.1f);
     }
 
@@ -211,6 +241,16 @@ public class PlayerController : MonoBehaviour
     {
         return (transform.position - position).sqrMagnitude;
     }
+
+    public void UseStamina()
+    {
+        currentStamina = Mathf.Clamp(currentStamina - staminaJumpUsage, 0, maxStamina);
+        currentStaminaSubject.OnNext(currentStamina);
+
+        lastStaminaUsageTimer = Time.time;
+    }
+
+    public bool CanUseStamina => currentStamina > 0;
 }
 
 public class HellDamage : BaseDamage
