@@ -25,6 +25,10 @@ public class PlayerController : MonoBehaviour
     public List<Vector3> snapshots = new();
     public LayerMask hellDetectionLayers;
 
+    [Header("Collectable")]
+    public LayerMask collectablesLayerMask;
+    float collectablesDetectionRadius = 0.5f;
+
     void Awake()
     {
         states = statesContainer.GetComponentsInChildren<BasePlayerState>(true);
@@ -81,6 +85,26 @@ public class PlayerController : MonoBehaviour
                 lastSnapshotTimer = Time.time;
             }
         }
+
+        DetectCollectable();
+    }
+
+    void DetectCollectable()
+    {
+        var collectablesOverlapping = Physics.OverlapSphere(transform.position, collectablesDetectionRadius, collectablesLayerMask);
+
+        foreach (var collectableOverlapping in collectablesOverlapping)
+        {
+            var collectable = collectableOverlapping.GetComponent<Collectable>();
+
+            collectable.Collect();
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, collectablesDetectionRadius);
     }
 
     void RecoverPosition()
