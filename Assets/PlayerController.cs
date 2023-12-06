@@ -13,6 +13,78 @@ public class ReactDistance
     public float distance;
 }
 
+[System.Serializable]
+public class InventoryItem
+{
+    public InventoryItemSO inventoryItemSO = null;
+    public int amount = 0;
+
+    public void AddAmount(int amount)
+    {
+        this.amount += amount;
+
+        this.amount = Mathf.Max(0, this.amount);
+    }
+
+    internal void UseAmount(int amount)
+    {
+        this.amount -= amount;
+
+        this.amount = Mathf.Max(0, this.amount);
+    }
+}
+
+[System.Serializable]
+public class Inventory
+{
+    public List<InventoryItem> inventoryItems = new();
+
+    public void AddInventoryItem(InventoryItemSO inventoryItemSO, int amount)
+    {
+        var inventoryItem = CreateOrGetInventoryItem(inventoryItemSO, amount);
+
+        inventoryItem.AddAmount(amount);
+    }
+
+    private InventoryItem CreateOrGetInventoryItem(InventoryItemSO inventoryItemSO, int amount)
+    {
+        var inventoryItem = FindInventoryItemBySO(inventoryItemSO);
+
+        if (inventoryItem != null)
+        {
+            return inventoryItem;
+        }
+        else
+        {
+            var newInventoryItem = new InventoryItem();
+            newInventoryItem.AddAmount(amount);
+
+            inventoryItems.Add(newInventoryItem);
+
+            return newInventoryItem;
+        }
+    }
+
+    public void UseInventoryItem(InventoryItemSO inventoryItemSO, int amount)
+    {
+        var inventoryItem = CreateOrGetInventoryItem(inventoryItemSO, amount);
+
+        inventoryItem.UseAmount(amount);
+    }
+
+    public int GetInventoryItemAmount(InventoryItemSO inventoryItemSO)
+    {
+        var inventoryItem = FindInventoryItemBySO(inventoryItemSO);
+
+        return inventoryItem != null ? inventoryItem.amount : 0;
+    }
+
+    InventoryItem FindInventoryItemBySO(InventoryItemSO inventoryItemSO)
+    {
+        return inventoryItems.Find((item) => item.inventoryItemSO == inventoryItemSO);
+    }
+}
+
 public class PlayerController : MonoBehaviour
 {
     public CharacterController characterController;
@@ -57,6 +129,13 @@ public class PlayerController : MonoBehaviour
     public float fullRegenerationTime = 2.5f;
     public float regenerationDelay = 0.5f;
     private float lastStaminaUsageTimer;
+
+    [Header("Inventory")]
+    public Inventory inventory;
+    public PotionUsages potionUsages;
+    public float potionUseBreakTime = 3f;
+    float potionUseTimer;
+    public InventoryItemSO selectedPotionSO;
 
     void Awake()
     {
@@ -106,6 +185,11 @@ public class PlayerController : MonoBehaviour
         {
             TakeHellDamage();
             RecoverPosition();
+        }
+
+        if (Input.GetButton("Fire2"))
+        {
+            TryUsePotion();
         }
 
         if (lastSnapshotTimer + snapshotTime < Time.time)
@@ -251,6 +335,47 @@ public class PlayerController : MonoBehaviour
     }
 
     public bool CanUseStamina => currentStamina > 0;
+
+    public void TryUsePotion()
+    {
+        if (potionUseTimer + potionUseBreakTime >= Time.time)
+        {
+            return;
+        }
+
+        if (selectedPotionSO == null)
+        {
+
+        }
+
+        if (inventory.GetInventoryItemAmount(selectedPotionSO) > 0)
+        {
+            inventory.UseInventoryItem(selectedPotionSO, 1);
+            potionUsages.UsePotion(selectedPotionSO);
+
+            potionUseTimer = Time.time;
+
+            if (inventory.GetInventoryItemAmount(selectedPotionSO) == 0)
+            {
+                ClearSelectedPotion();
+            }
+        }
+    }
+
+    void ClearSelectedPotion()
+    {
+        selectedPotionSO = null;
+    }
+
+    public void SetPotion(InventoryItemSO inventoryItemSO)
+    {
+        if (!inventoryItemSO.IsPotion)
+        {
+            throw new System.Exception("Selected inventory item is not a potion " + inventoryItemSO.name);
+        }
+
+        selectedPotionSO = inventoryItemSO;
+    }
 }
 
 public class HellDamage : BaseDamage
