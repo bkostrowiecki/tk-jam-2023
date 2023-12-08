@@ -136,6 +136,15 @@ public class PlayerController : MonoBehaviour
     public float potionUseBreakTime = 3f;
     float potionUseTimer;
     public InventoryItemSO selectedPotionSO;
+    public InventoryItemSO selectedWeaponSO;
+
+    BehaviorSubject<InventoryItemSO> selectedPotionSOSubject;
+    BehaviorSubject<int> selectedPotionAmountSubject;
+    BehaviorSubject<InventoryItemSO> selectedWeaponSOSubject;
+
+    public IObservable<InventoryItemSO> SelectedPotionSOObservable => selectedPotionSOSubject.AsObservable();
+    public IObservable<int> SelectedPotionAmountObservable => selectedPotionAmountSubject.AsObservable();
+    public IObservable<InventoryItemSO> SelectedWeaponSOObservable => selectedWeaponSOSubject.AsObservable();
 
     void Awake()
     {
@@ -155,6 +164,10 @@ public class PlayerController : MonoBehaviour
         currentStamina = maxStamina;
         currentStaminaSubject = new BehaviorSubject<int>(currentStamina);
         maxStaminaSubject = new BehaviorSubject<int>(maxStamina);
+
+        selectedPotionSOSubject = new BehaviorSubject<InventoryItemSO>(selectedPotionSO);
+        selectedPotionAmountSubject = new BehaviorSubject<int>(inventory.GetInventoryItemAmount(selectedPotionSO));
+        selectedWeaponSOSubject = new BehaviorSubject<InventoryItemSO>(null);
     }
 
     public Vector3 AddGravity(Vector3 movement)
@@ -345,7 +358,7 @@ public class PlayerController : MonoBehaviour
 
         if (selectedPotionSO == null)
         {
-
+            return;
         }
 
         if (inventory.GetInventoryItemAmount(selectedPotionSO) > 0)
@@ -354,6 +367,9 @@ public class PlayerController : MonoBehaviour
             potionUsages.UsePotion(selectedPotionSO);
 
             potionUseTimer = Time.time;
+
+            var amount = inventory.GetInventoryItemAmount(selectedPotionSO);
+            selectedPotionAmountSubject.OnNext(amount);
 
             if (inventory.GetInventoryItemAmount(selectedPotionSO) == 0)
             {
@@ -365,6 +381,8 @@ public class PlayerController : MonoBehaviour
     void ClearSelectedPotion()
     {
         selectedPotionSO = null;
+        selectedPotionAmountSubject.OnNext(0);
+        selectedPotionSOSubject.OnNext(null);
     }
 
     public void SetPotion(InventoryItemSO inventoryItemSO)
@@ -375,6 +393,25 @@ public class PlayerController : MonoBehaviour
         }
 
         selectedPotionSO = inventoryItemSO;
+        selectedPotionSOSubject.OnNext(selectedPotionSO);
+        
+        var amount = inventory.GetInventoryItemAmount(inventoryItemSO);
+        selectedPotionAmountSubject.OnNext(amount);
+    }
+
+    public void SetWeapon(InventoryItemSO inventoryItemSO)
+    {
+        if (!inventoryItemSO.IsWeapon)
+        {
+            throw new System.Exception("Selected inventory item is not a weapon " + inventoryItemSO.name);
+        }
+
+        selectedWeaponSO = inventoryItemSO;
+    }
+
+    void ClearSelectedWeapon()
+    {
+        selectedPotionSO = null;
     }
 }
 
