@@ -13,78 +13,6 @@ public class ReactDistance
     public float distance;
 }
 
-[System.Serializable]
-public class InventoryItem
-{
-    public InventoryItemSO inventoryItemSO = null;
-    public int amount = 0;
-
-    public void AddAmount(int amount)
-    {
-        this.amount += amount;
-
-        this.amount = Mathf.Max(0, this.amount);
-    }
-
-    internal void UseAmount(int amount)
-    {
-        this.amount -= amount;
-
-        this.amount = Mathf.Max(0, this.amount);
-    }
-}
-
-[System.Serializable]
-public class Inventory
-{
-    public List<InventoryItem> inventoryItems = new();
-
-    public void AddInventoryItem(InventoryItemSO inventoryItemSO, int amount)
-    {
-        var inventoryItem = CreateOrGetInventoryItem(inventoryItemSO, amount);
-
-        inventoryItem.AddAmount(amount);
-    }
-
-    private InventoryItem CreateOrGetInventoryItem(InventoryItemSO inventoryItemSO, int amount)
-    {
-        var inventoryItem = FindInventoryItemBySO(inventoryItemSO);
-
-        if (inventoryItem != null)
-        {
-            return inventoryItem;
-        }
-        else
-        {
-            var newInventoryItem = new InventoryItem();
-            newInventoryItem.AddAmount(amount);
-
-            inventoryItems.Add(newInventoryItem);
-
-            return newInventoryItem;
-        }
-    }
-
-    public void UseInventoryItem(InventoryItemSO inventoryItemSO, int amount)
-    {
-        var inventoryItem = CreateOrGetInventoryItem(inventoryItemSO, amount);
-
-        inventoryItem.UseAmount(amount);
-    }
-
-    public int GetInventoryItemAmount(InventoryItemSO inventoryItemSO)
-    {
-        var inventoryItem = FindInventoryItemBySO(inventoryItemSO);
-
-        return inventoryItem != null ? inventoryItem.amount : 0;
-    }
-
-    InventoryItem FindInventoryItemBySO(InventoryItemSO inventoryItemSO)
-    {
-        return inventoryItems.Find((item) => item.inventoryItemSO == inventoryItemSO);
-    }
-}
-
 public class PlayerController : MonoBehaviour
 {
     public CharacterController characterController;
@@ -141,10 +69,13 @@ public class PlayerController : MonoBehaviour
     BehaviorSubject<InventoryItemSO> selectedPotionSOSubject;
     BehaviorSubject<int> selectedPotionAmountSubject;
     BehaviorSubject<InventoryItemSO> selectedWeaponSOSubject;
+    BehaviorSubject<InventoryItem> selectedWeaponSubject;
 
     public IObservable<InventoryItemSO> SelectedPotionSOObservable => selectedPotionSOSubject.AsObservable();
     public IObservable<int> SelectedPotionAmountObservable => selectedPotionAmountSubject.AsObservable();
     public IObservable<InventoryItemSO> SelectedWeaponSOObservable => selectedWeaponSOSubject.AsObservable();
+    public IObservable<InventoryItem> SelectedWeaponObservable => selectedWeaponSubject.AsObservable();
+    public IObservable<List<InventoryItem>> InventoryItemsObservable => inventory.InventoryItemsObservable;
 
     void Awake()
     {
@@ -168,6 +99,11 @@ public class PlayerController : MonoBehaviour
         selectedPotionSOSubject = new BehaviorSubject<InventoryItemSO>(selectedPotionSO);
         selectedPotionAmountSubject = new BehaviorSubject<int>(inventory.GetInventoryItemAmount(selectedPotionSO));
         selectedWeaponSOSubject = new BehaviorSubject<InventoryItemSO>(null);
+
+        var inventoryItem = inventory.FindInventoryItemBySO(selectedWeaponSO);
+        selectedWeaponSubject = new BehaviorSubject<InventoryItem>(inventoryItem);
+
+        inventory.Emit();
     }
 
     public Vector3 AddGravity(Vector3 movement)
