@@ -28,6 +28,8 @@ public class Killable : MonoBehaviour
     BehaviorSubject<int> maxHealthPointsSubject;
 
     public IObservable<int> MaxHealthPointsObservable => maxHealthPointsSubject.AsObservable();
+    public bool canTakeDamage = true;
+    bool isDead = false;
 
     void Awake()
     {
@@ -38,6 +40,11 @@ public class Killable : MonoBehaviour
 
     public void TakeDamage(BaseDamage damage)
     {
+        if (!canTakeDamage || isDead)
+        {
+            return;
+        }
+
         var damageHealthPoints = damage.CalculateDamage();
         var cachedHealthPoints = currentHealthPoints;
         currentHealthPoints = Mathf.Clamp(currentHealthPoints - damageHealthPoints, 0, maxHealthPoints);
@@ -66,6 +73,7 @@ public class Killable : MonoBehaviour
 
     void Die()
     {
+        isDead = true;
         onDied?.Invoke();
     }
 }

@@ -6,6 +6,7 @@ using MoreMountains.Feedbacks;
 using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ReactDistance
 {
@@ -76,6 +77,10 @@ public class PlayerController : MonoBehaviour
     public IObservable<InventoryItemSO> SelectedWeaponSOObservable => selectedWeaponSOSubject.AsObservable();
     public IObservable<InventoryItem> SelectedWeaponObservable => selectedWeaponSubject.AsObservable();
     public IObservable<List<InventoryItem>> InventoryItemsObservable => inventory.InventoryItemsObservable;
+
+    [Header("Death")]
+    public float dieReactionDelay = 2.4f;
+    public UnityEvent onDied = new UnityEvent();
 
     void Awake()
     {
@@ -232,6 +237,11 @@ public class PlayerController : MonoBehaviour
         MakeImmortalForTime(hitTimeImmortality, 0.1f);
     }
 
+    public void MakeImmortal()
+    {
+        MakeImmortalForTime(hitTimeImmortality, 0.1f);
+    }
+
     public void MakeReactionPossible(PlayerReactArea playerReactArea)
     {
         var found = playerReactAreas.Find((item) => item.area == playerReactArea);
@@ -259,7 +269,7 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator MakeImmortalForTimeAsync(float time, float feedbackDelay)
     {
-        killable.enabled = false;
+        killable.canTakeDamage = false;
 
         yield return new WaitForSeconds(feedbackDelay);
         becomeImmortalFeedbacks?.PlayFeedbacks();
@@ -267,7 +277,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(time - feedbackDelay);
 
         becomeImmortalFeedbacks?.StopFeedbacks();
-        killable.enabled = true;
+        killable.canTakeDamage = true;
     }
 
     float CalculateDistance(Vector3 position)
@@ -350,6 +360,26 @@ public class PlayerController : MonoBehaviour
     void ClearSelectedWeapon()
     {
         selectedPotionSO = null;
+    }
+
+    public void Die()
+    {
+        foreach (var state in states)
+        {
+            state.gameObject.SetActive(false);
+        }
+
+        animator.SetTrigger("die");
+        killable.canTakeDamage = false;
+
+        StartCoroutine(ShowGameOverAsync());
+    }
+
+    IEnumerator ShowGameOverAsync()
+    {
+        yield return new WaitForSecondsRealtime(dieReactionDelay);
+
+        onDied?.Invoke();
     }
 }
 
