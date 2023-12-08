@@ -22,11 +22,14 @@ public class PlayerJumpingState : BasePlayerState
     {
         cachedHeight = playerController.characterController.height;
         playerController.characterController.height = 1;
+
+        playerController.animator.SetTrigger("jump");
     }
 
     void OnDisable()
     {
         playerController.characterController.height = cachedHeight;
+        playerController.animator.ResetTrigger("jump");
     }
 
     public void JumpTorwards(Vector3 rawInput)

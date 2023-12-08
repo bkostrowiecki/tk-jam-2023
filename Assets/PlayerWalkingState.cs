@@ -86,6 +86,15 @@ public class PlayerWalkingState : BasePlayerState
         float lerpProgress = accelerationCurve.Evaluate(accelerationProgress / accelerationTime);
         Vector3 movement = Vector3.Lerp(Vector3.zero, goalMovement, lerpProgress);
 
+        if (movement.magnitude > 0)
+        {
+            playerController.animator.SetFloat("speedRelative", Mathf.Clamp01(lerpProgress * 2f));
+        }
+        else
+        {
+            playerController.animator.SetFloat("speedRelative", Mathf.Clamp01(0f));
+        }
+
         playerController.characterController.Move(playerController.AddGravity(movement) * Time.deltaTime);
     }
 

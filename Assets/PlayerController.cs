@@ -285,6 +285,8 @@ public class PlayerController : MonoBehaviour
 
     public bool CanUseStamina => currentStamina > 0;
 
+    public Animator animator;
+
     public void TryUsePotion()
     {
         if (potionUseTimer + potionUseBreakTime >= Time.time)
