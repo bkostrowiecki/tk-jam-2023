@@ -93,9 +93,12 @@ public class BaseWeaponState : MonoBehaviour
         {
             if (sacrificeTimer + sacrificeJumpTime < Time.time && sacrificeTimer + sacrificeJumpTime + sacrificeDoneTime > Time.time)
             {
-                CheckSacrificeTargetCollision();
+                sacrificeTarget.GetComponent<Sacrificable>().MakeLayDown();
 
                 playerController.animator.SetTrigger(animationFinishSacrificeTrigger);
+
+                var projected = Vector3.ProjectOnPlane(sacrificeTarget.transform.forward, Vector3.up);
+                playerController.transform.forward = projected;
             }
             else if (sacrificeTimer + sacrificeJumpTime > Time.time)
             {
@@ -121,6 +124,7 @@ public class BaseWeaponState : MonoBehaviour
             else if (sacrificeTimer + sacrificeJumpTime + sacrificeDoneTime < Time.time)
             {
                 sacrificeTarget.GetComponent<Sacrificable>().MakeLayDead();
+                model.SetActive(false);
             }
         }
     }
@@ -148,23 +152,6 @@ public class BaseWeaponState : MonoBehaviour
         {
             sacrificeTarget = closest;
         }
-    }
-
-    bool CheckSacrificeTargetCollision()
-    {
-        var colliders = Physics.OverlapSphere(transform.position, hitRange, hittableLayerMask);
-
-        foreach (var collider in colliders)
-        {
-            if (collider == sacrificeTarget)
-            {
-                collider.GetComponent<Sacrificable>().MakeLayDown();
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public float CalculateDistanceToPlayer(Transform transform)

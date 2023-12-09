@@ -9,11 +9,9 @@ public class PlayerJumpingState : BasePlayerState
     public float jumpDistance = 3f;
     public float jumpSpeed = 5f;
     private Vector3 jumpDirection;
-    private Vector3 startPoint;
     private Vector3 projectedInputByCamera;
     private float jumpTime;
     private float jumpStartTimer;
-    private float previousEvaluated;
     public AnimationCurve jumpCurve;
     public PlayerWalkingState playerWalkingState;
     private float cachedHeight;
@@ -27,6 +25,8 @@ public class PlayerJumpingState : BasePlayerState
 
         playerController.ZeroGravity();
         playerController.HoldAttacks();
+
+        
     }
 
     void OnDisable()
@@ -39,14 +39,11 @@ public class PlayerJumpingState : BasePlayerState
     public void JumpTorwards(Vector3 rawInput)
     {
         jumpDirection = rawInput.normalized;
-        startPoint = playerController.characterController.transform.position;
 
         projectedInputByCamera = playerWalkingState.ProjectInputToWorld(rawInput);
 
         jumpTime = jumpDistance / jumpSpeed;
         jumpStartTimer = Time.time;
-
-        previousEvaluated = jumpCurve.Evaluate(0f);
 
         playerController.UseStamina();
     }

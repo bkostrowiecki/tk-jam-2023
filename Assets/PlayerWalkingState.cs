@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerWalkingState : BasePlayerState
 {
-    Vector3 prevMovement;
     Vector3 lastProjectedInputByCamera;
     public float directionApplyTime = 0.05f;
     public float accelerationTime = 0.5f;
@@ -40,7 +39,7 @@ public class PlayerWalkingState : BasePlayerState
     }
     #endif
 
-    void Start()
+    void OnEnable()
     {
         previousDirectionApplied = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
         directionApplied = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
@@ -166,5 +165,10 @@ public class PlayerWalkingState : BasePlayerState
             }
             lastGoalMovement = goalMovement;
         }
+    }
+
+    void OnDisable()
+    {
+        lastGoalMovement = Vector3.zero;
     }
 }
