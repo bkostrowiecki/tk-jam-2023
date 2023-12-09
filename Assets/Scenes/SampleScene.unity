@@ -1783,6 +1783,8 @@ Transform:
   m_Children:
   - {fileID: 1501270337}
   - {fileID: 2010500622}
+  - {fileID: 1748673924}
+  - {fileID: 731541072}
   - {fileID: 1953765478}
   - {fileID: 1229354961}
   - {fileID: 115645878}
@@ -1791,7 +1793,6 @@ Transform:
   - {fileID: 1090063880}
   - {fileID: 1922876763}
   - {fileID: 1414241763}
-  - {fileID: 731541072}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &589004523
@@ -6115,6 +6116,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
+--- !u!1 &1748673923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1748673924}
+  - component: {fileID: 1748673925}
+  m_Layer: 3
+  m_Name: Sacrifice
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1748673924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748673923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 589004522}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1748673925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748673923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4768bbdac8bca4145ac8cfa084c049a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 589004519}
+  animationJumpSacrificeTrigger: jumpOn
+  animationFinishSacrificeTrigger: finish
+  sacrificeJumpTime: 0.8
+  sacrificeDoneTime: 1
+  sacrificeRecoilTime: 1
+  sacrificeRange: 2
+  sacrificeTransform: {fileID: 731541072}
+  sacrificableLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &1799734308
 GameObject:
   m_ObjectHideFlags: 0
@@ -6161,14 +6217,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerController: {fileID: 589004519}
   weaponStates: {fileID: 2010500623}
+  sacrifice: {fileID: 1748673925}
   model: {fileID: 1473458391}
   isDebugging: 0
   inventoryItemSO: {fileID: 11400000, guid: 79b4017a33af75f4cb73342fc388e0df, type: 2}
   animationAttackTrigger: slashSword
   animationAttackSpeed: 2
   comboLastHitAnimationSpeed: 1.2
-  animationJumpSacrificeTrigger: jumpOn
-  animationFinishSacrificeTrigger: finish
   speed: 2
   slideDelay: 0
   slideTime: 0.25
@@ -6181,14 +6236,7 @@ MonoBehaviour:
   recoilTime: 0.3
   comboLength: 4
   comboRecoilTime: 0.6
-  sacrificeJumpTime: 0.8
-  sacrificeDoneTime: 1
-  sacrificeRecoilTime: 1
-  sacrificeRange: 1.5
-  sacrificeTransform: {fileID: 731541072}
-  sacrificableLayerMask:
-    serializedVersion: 2
-    m_Bits: 256
+  currentCombo: 0
 --- !u!1 &1859294003
 GameObject:
   m_ObjectHideFlags: 0

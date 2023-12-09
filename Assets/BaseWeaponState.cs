@@ -8,6 +8,7 @@ public class BaseWeaponState : MonoBehaviour
     [Header("Dependencies")]
     public PlayerController playerController;
     public WeaponStates weaponStates;
+    public Sacrifice sacrifice;
     public GameObject model;
     [Header("Debug")]
     public bool isDebugging;
@@ -21,9 +22,7 @@ public class BaseWeaponState : MonoBehaviour
     public float animationAttackSpeed;
     public float comboLastHitAnimationSpeed;
 
-    [Header("Sacrifice animation parameters")]
-    public string animationJumpSacrificeTrigger;
-    public string animationFinishSacrificeTrigger;
+    
 
     [Header("Slide parameters")]
     public float speed;
@@ -39,24 +38,14 @@ public class BaseWeaponState : MonoBehaviour
     public int comboLength;
     public float comboRecoilTime;
 
-    [Header("Sacrifice parameter")]
-    public float sacrificeJumpTime;
-    public float sacrificeDoneTime;
-    public float sacrificeRecoilTime;
-    public float sacrificeRange;
-    public Transform sacrificeTransform;
-
-    public LayerMask sacrificableLayerMask;
-    float? sacrificeTimer = null;
-
+    
     float? attackTimer = null;
     List<Collider> alreadyHandled = new List<Collider>();
     Vector3 movementVector;
     private Vector3 jumpStepVector;
     bool isSacrificing = false;
-    int currentCombo = 0;
-    private Collider sacrificeTarget;
-
+    public int currentCombo = 0;
+    
     void OnEnable()
     {
         model.SetActive(true);
@@ -69,18 +58,16 @@ public class BaseWeaponState : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && !attackTimer.HasValue && !sacrificeTimer.HasValue)
+        if (Input.GetButtonDown("Fire1") && !attackTimer.HasValue && !sacrifice.IsSacrificing)
         {
             StartAttack();
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !sacrificeTimer.HasValue && !attackTimer.HasValue)
+        if (Input.GetKeyDown(KeyCode.E) && !sacrifice.IsSacrificing && !attackTimer.HasValue)
         {
-            FindSacrificeTarget();
-
-            if (sacrificeTarget != null)
+            if (sacrifice.MakeSacrifice(this))
             {
-                StartSacrifice();
+                currentCombo = 0;
             }
         }
 
@@ -88,99 +75,6 @@ public class BaseWeaponState : MonoBehaviour
         {
             HandleAttack();
         }
-
-        if (sacrificeTimer.HasValue)
-        {
-            if (sacrificeTimer + sacrificeJumpTime < Time.time && sacrificeTimer + sacrificeJumpTime + sacrificeDoneTime > Time.time)
-            {
-                sacrificeTarget.GetComponent<Sacrificable>().MakeLayDown();
-
-                playerController.animator.SetTrigger(animationFinishSacrificeTrigger);
-
-                var projected = Vector3.ProjectOnPlane(sacrificeTarget.transform.forward, Vector3.up);
-                playerController.transform.forward = projected;
-            }
-            else if (sacrificeTimer + sacrificeJumpTime > Time.time)
-            {
-                var difference = sacrificeTarget.transform.position - playerController.transform.position;
-                var direction = difference.normalized;
-
-                var projected = Vector3.ProjectOnPlane(direction, Vector3.up);
-
-                playerController.transform.forward = projected;
-
-                playerController.characterController.Move(jumpStepVector * Time.deltaTime);
-            }
-
-            if (sacrificeTimer + sacrificeJumpTime + sacrificeDoneTime + sacrificeRecoilTime < Time.time)
-            {
-                playerController.RestoreMovement();
-                sacrificeTimer = null;
-
-                currentCombo = 0;
-
-                playerController.UseWeapon();
-            }
-            else if (sacrificeTimer + sacrificeJumpTime + sacrificeDoneTime < Time.time)
-            {
-                sacrificeTarget.GetComponent<Sacrificable>().MakeLayDead();
-                model.SetActive(false);
-            }
-        }
-    }
-
-    void FindSacrificeTarget()
-    {
-        var colliders = Physics.OverlapSphere(sacrificeTransform.position, sacrificeRange, sacrificableLayerMask);
-
-        Collider closest = null;
-
-        float minDistance = Mathf.Infinity;
-
-        foreach (var collider in colliders)
-        {
-            var distance = CalculateDistanceToPlayer(collider.transform);
-
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                closest = collider;
-            }
-        }
-
-        if (closest != null)
-        {
-            sacrificeTarget = closest;
-        }
-    }
-
-    public float CalculateDistanceToPlayer(Transform transform)
-    {
-        return (playerController.transform.position -  transform.position).sqrMagnitude;
-    }
-
-    private void StartSacrifice()
-    {
-        currentCombo = 0;
-
-        playerController.HoldMovement(1f);
-        sacrificeTimer = Time.time;
-
-        StartCoroutine(playerController.SetTriggerAsync(animationJumpSacrificeTrigger, 0f));
-
-        var difference = sacrificeTarget.transform.position - playerController.transform.position;
-        var direction = difference.normalized;
-        var distance = difference.magnitude;
-
-        var projected = Vector3.ProjectOnPlane(direction, Vector3.up);
-
-        playerController.transform.forward = projected;
-
-        movementVector = projected;
-
-        jumpStepVector = projected * (distance / sacrificeJumpTime);
-
-        sacrificeTarget.GetComponent<Sacrificable>().StartSacrifice();
     }
 
     private void HandleAttack()
