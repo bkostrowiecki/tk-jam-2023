@@ -13,6 +13,7 @@ public class Sacrificable : MonoBehaviour
     public void StartSacrifice()
     {
         onStartSacrifice?.Invoke();
+        gameObject.layer = LayerMask.NameToLayer("Corpse");
     }
 
     public void MakeLayDown()

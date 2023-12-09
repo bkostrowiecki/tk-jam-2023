@@ -55,13 +55,18 @@ public class Sacrifice : MonoBehaviour
             {
                 playerController.RestoreMovement();
                 sacrificeTimer = null;
-
                 weaponState.currentCombo = 0;
 
+                StartCoroutine(playerController.ResetTriggerAsync(animationFinishSacrificeTrigger, 0f));
+
+                weaponState.model.SetActive(true);
                 playerController.UseWeapon();
+
             }
             else if (sacrificeTimer + sacrificeJumpTime + sacrificeDoneTime < Time.time)
             {
+                StartCoroutine(playerController.ResetTriggerAsync(animationJumpSacrificeTrigger, 0f));
+
                 sacrificeTarget.GetComponent<Sacrificable>().MakeLayDead();
                 weaponState.model.SetActive(false);
             }
@@ -70,6 +75,8 @@ public class Sacrifice : MonoBehaviour
 
     void FindSacrificeTarget()
     {
+        sacrificeTarget = null;
+
         var colliders = Physics.OverlapSphere(sacrificeTransform.position, sacrificeRange, sacrificableLayerMask);
 
         Collider closest = null;
