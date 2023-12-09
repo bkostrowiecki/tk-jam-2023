@@ -6063,7 +6063,7 @@ MonoBehaviour:
   isDebugging: 0
   inventoryItemSO: {fileID: 11400000, guid: 79b4017a33af75f4cb73342fc388e0df, type: 2}
   animationAttackTrigger: slashSword
-  animationAttackSpeed: 0
+  animationAttackSpeed: 2
   comboLastHitAnimationSpeed: 1.2
   animationJumpSacrificeTrigger: jumpOn
   animationFinishSacrificeTrigger: finish

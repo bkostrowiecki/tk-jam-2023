@@ -58,12 +58,12 @@ public class BaseWeaponState : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && !attackTimer.HasValue && !isSacrificing && !sacrificeTimer.HasValue)
+        if (Input.GetButtonDown("Fire1") && !attackTimer.HasValue && !sacrificeTimer.HasValue)
         {
             StartAttack();
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && !isSacrificing && !sacrificeTimer.HasValue && !attackTimer.HasValue)
+        if (Input.GetKeyDown(KeyCode.E) && !sacrificeTimer.HasValue && !attackTimer.HasValue)
         {
             FindSacrificeTarget();
 
