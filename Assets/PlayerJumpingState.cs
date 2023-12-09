@@ -24,12 +24,16 @@ public class PlayerJumpingState : BasePlayerState
         playerController.characterController.height = 1;
 
         playerController.animator.SetTrigger("jump");
+
+        playerController.ZeroGravity();
+        playerController.HoldAttacks();
     }
 
     void OnDisable()
     {
         playerController.characterController.height = cachedHeight;
-        playerController.animator.ResetTrigger("jump");
+        playerController.StartCoroutine(playerController.ResetTriggerAsync("jump", 0.8f));
+        playerController.RestoreAttacks();
     }
 
     public void JumpTorwards(Vector3 rawInput)
@@ -49,11 +53,6 @@ public class PlayerJumpingState : BasePlayerState
 
     void Update()
     {
-        var relativeTime = Time.time - jumpStartTimer;
-
-        var evaluated = jumpCurve.Evaluate(relativeTime / jumpTime);
-        var step = evaluated - previousEvaluated;
-
         playerWalkingState.HandleDirection(projectedInputByCamera, jumpDirection);
 
         playerController.characterController.Move(jumpSpeed * jumpDirection * Time.deltaTime);

@@ -17,6 +17,7 @@ public class InventoryItemSO : ScriptableObject
     [Header("Only weapon")]
     public int requiredBlood = 10;
     public int attackSpeed = 10;
+    public int damage = 10;
 
     public bool IsPotion => type == InventoryItemType.Potion;
     public bool IsWeapon => type == InventoryItemType.Weapon;

@@ -13,8 +13,8 @@ TagManager:
   - UI
   - Collectables
   - DamageOnTouch
-  - 
-  - 
+  - Enemy
+  - Destructable
   - 
   - 
   - 

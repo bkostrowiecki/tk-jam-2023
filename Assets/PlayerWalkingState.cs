@@ -27,13 +27,18 @@ public class PlayerWalkingState : BasePlayerState
     [Header("Stamina")]
     public MMF_Player cannotUseStaminaFeedbacks;
 
+    #if UNITY_EDITOR
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 120, 120), new GUIContent("Direction applied" + directionApplied.ToString()));
-        GUI.Label(new Rect(120, 120, 120, 120), new GUIContent("Acceleration progress " + accelerationProgress.ToString()));
-        GUI.Label(new Rect(220, 220, 120, 120), new GUIContent("lastMovementTimer " + lastProjectedInputByCameraTimer.ToString()));
-        GUI.Label(new Rect(120, 320, 120, 120), new GUIContent("previousDirectionApplied " + previousDirectionApplied.ToString()));
+        if (isDebugging)
+        {
+            GUI.Label(new Rect(10, 10, 120, 120), new GUIContent("Direction applied" + directionApplied.ToString()));
+            GUI.Label(new Rect(10, 30, 120, 120), new GUIContent("Acceleration progress " + accelerationProgress.ToString()));
+            GUI.Label(new Rect(10, 50, 120, 120), new GUIContent("lastMovementTimer " + lastProjectedInputByCameraTimer.ToString()));
+            GUI.Label(new Rect(10, 70, 120, 120), new GUIContent("previousDirectionApplied " + previousDirectionApplied.ToString()));
+        }
     }
+    #endif
 
     void Start()
     {

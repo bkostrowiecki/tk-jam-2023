@@ -17,12 +17,15 @@ public class ReactDistance
 public class PlayerController : MonoBehaviour
 {
     public CharacterController characterController;
+    public bool isDebugging = false;
 
     public GameObject statesContainer;
     [Header("Input")]
     public Transform playerRotationBaseTransform;
     [Header("Internals")]
     public Killable killable;
+    public Animator animator;
+    public WeaponStates weaponStates;
 
     [Header("Gravity")]
     public float gravity = 10f;
@@ -81,6 +84,9 @@ public class PlayerController : MonoBehaviour
     [Header("Death")]
     public float dieReactionDelay = 2.4f;
     public UnityEvent onDied = new UnityEvent();
+    private bool isMovementHolded;
+    private float cachedAnimatorSpeed;
+    bool canAttack;
 
     void Awake()
     {
@@ -89,6 +95,7 @@ public class PlayerController : MonoBehaviour
         foreach (var child in states)
         {
             child.playerController = this;
+            child.isDebugging = isDebugging;
             child.gameObject.SetActive(false);
         }
 
@@ -108,6 +115,8 @@ public class PlayerController : MonoBehaviour
         var inventoryItem = inventory.FindInventoryItemBySO(selectedWeaponSO);
         selectedWeaponSubject = new BehaviorSubject<InventoryItem>(inventoryItem);
 
+        weaponStates.SetCurrentWeapon(selectedWeaponSO);
+
         inventory.Emit();
     }
 
@@ -123,6 +132,37 @@ public class PlayerController : MonoBehaviour
         }
 
         return movement + Vector3.down * gravityVelocity;
+    }
+
+    public IEnumerator ResetTriggerAsync(string trigger, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        animator.ResetTrigger(trigger);
+    }
+
+    public IEnumerator SetTriggerAsync(string trigger, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        animator.SetTrigger(trigger);
+    }
+
+    public Vector3 AddDiminishedGravity(Vector3 movement)
+    {
+        gravityVelocity += gravity * 0.1f * Time.deltaTime;
+
+        gravityVelocity = Mathf.Min(maxGravityVelocity, gravityVelocity);
+
+        if (characterController.isGrounded)
+        {
+            gravityVelocity = -0.2f;
+        }
+
+        return movement + Vector3.down * gravityVelocity;
+    }
+
+    public void ZeroGravity()
+    {
+        gravityVelocity = 0f;
     }
 
     public void ActivateState(BasePlayerState basePlayerState)
@@ -295,8 +335,6 @@ public class PlayerController : MonoBehaviour
 
     public bool CanUseStamina => currentStamina > 0;
 
-    public Animator animator;
-
     public void TryUsePotion()
     {
         if (potionUseTimer + potionUseBreakTime >= Time.time)
@@ -355,6 +393,8 @@ public class PlayerController : MonoBehaviour
         }
 
         selectedWeaponSO = inventoryItemSO;
+
+        weaponStates.SetCurrentWeapon(selectedWeaponSO);
     }
 
     void ClearSelectedWeapon()
@@ -380,6 +420,35 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSecondsRealtime(dieReactionDelay);
 
         onDied?.Invoke();
+    }
+
+    public void HoldMovement(float modifiedSpeed)
+    {
+        if (!isMovementHolded)
+        {
+            cachedAnimatorSpeed = animator.speed;
+        }
+        animator.speed = modifiedSpeed;
+        statesContainer.gameObject.SetActive(false);
+        isMovementHolded = true;
+    }
+
+    public void RestoreMovement()
+    {
+        animator.speed = 1;
+        statesContainer.gameObject.SetActive(true);
+    }
+
+    public void HoldAttacks()
+    {
+        canAttack = false;
+        weaponStates.gameObject.SetActive(false);
+    }
+
+    public void RestoreAttacks()
+    {
+        canAttack = true;
+        weaponStates.gameObject.SetActive(true);
     }
 }
 

@@ -16,10 +16,17 @@ public class OnDamageEvent : UnityEvent<int, int, int>
 
 public class Killable : MonoBehaviour
 {
+    [Header("Damage")]
     public int maxHealthPoints = 100;
     int currentHealthPoints = 0;
-    public UnityEvent onDied = new UnityEvent();
+    public bool canTakeDamage = true;
     public OnDamageEvent onDamage = new OnDamageEvent();
+
+    [Header("Death")]
+    public bool shouldDestroyOnDeath;
+    public float destroyDelayOnDeath;
+    public GameObject corpsePrefab;
+    public UnityEvent onDied = new UnityEvent();
 
     BehaviorSubject<int> currentHealthPointsSubject;
 
@@ -28,7 +35,6 @@ public class Killable : MonoBehaviour
     BehaviorSubject<int> maxHealthPointsSubject;
 
     public IObservable<int> MaxHealthPointsObservable => maxHealthPointsSubject.AsObservable();
-    public bool canTakeDamage = true;
     bool isDead = false;
 
     void Awake()
@@ -74,7 +80,27 @@ public class Killable : MonoBehaviour
     void Die()
     {
         isDead = true;
+        if (corpsePrefab != null)
+        {
+            Instantiate(corpsePrefab, transform.position, transform.rotation);
+        }
+
         onDied?.Invoke();
+
+        if (shouldDestroyOnDeath)
+        {
+            Destroy(gameObject, destroyDelayOnDeath);
+        }
+    }
+
+    public void MakeImmortal()
+    {
+        this.canTakeDamage = false;
+    }
+
+    public void MakeMortal()
+    {
+        this.canTakeDamage = true;
     }
 }
 
