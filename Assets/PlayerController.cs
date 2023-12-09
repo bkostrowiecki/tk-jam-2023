@@ -399,7 +399,8 @@ public class PlayerController : MonoBehaviour
 
     void ClearSelectedWeapon()
     {
-        selectedPotionSO = null;
+        selectedWeaponSO = null;
+        weaponStates.SetCurrentWeapon(null);
     }
 
     public void Die()
@@ -449,6 +450,17 @@ public class PlayerController : MonoBehaviour
     {
         canAttack = true;
         weaponStates.gameObject.SetActive(true);
+    }
+
+    public void UseWeapon()
+    {
+        inventory.UseInventoryItem(selectedWeaponSO, 1);
+        var amount = inventory.GetInventoryItemAmount(selectedWeaponSO);
+
+        if (amount == 0)
+        {
+            ClearSelectedWeapon();
+        }
     }
 }
 

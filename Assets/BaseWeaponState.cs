@@ -8,6 +8,7 @@ public class BaseWeaponState : MonoBehaviour
     [Header("Dependencies")]
     public PlayerController playerController;
     public WeaponStates weaponStates;
+    public GameObject model;
     [Header("Debug")]
     public bool isDebugging;
 
@@ -55,6 +56,16 @@ public class BaseWeaponState : MonoBehaviour
     bool isSacrificing = false;
     int currentCombo = 0;
     private Collider sacrificeTarget;
+
+    void OnEnable()
+    {
+        model.SetActive(true);
+    }
+
+    void OnDisable()
+    {
+        model.SetActive(false);
+    }
 
     void Update()
     {
@@ -104,6 +115,8 @@ public class BaseWeaponState : MonoBehaviour
                 sacrificeTimer = null;
 
                 currentCombo = 0;
+
+                playerController.UseWeapon();
             }
             else if (sacrificeTimer + sacrificeJumpTime + sacrificeDoneTime < Time.time)
             {
