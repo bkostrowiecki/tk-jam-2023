@@ -12,9 +12,13 @@ public class WeaponStates : MonoBehaviour
     Dictionary<InventoryItemSO, BaseWeaponState> keyedWeaponStates = new();
 
     public InventoryItemSO activated;
-
+    bool isInitialized;
     void Awake()
     {
+        if (isInitialized)
+        {
+            return;
+        }
         states = statesContainer.GetComponentsInChildren<BaseWeaponState>(true);
 
         foreach (var child in states)
@@ -26,9 +30,16 @@ public class WeaponStates : MonoBehaviour
 
             keyedWeaponStates[child.inventoryItemSO] = child;
         }
+
+        isInitialized = true;
     }
     public void SetCurrentWeapon(InventoryItemSO selectedWeaponSO)
     {
+        if (keyedWeaponStates.Keys.Count == 0)
+        {
+            Awake();
+        }
+
         var cached = activated;
 
         if (cached != null)
