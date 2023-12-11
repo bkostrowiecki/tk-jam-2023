@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class BaseWeaponState : MonoBehaviour
@@ -46,6 +47,7 @@ public class BaseWeaponState : MonoBehaviour
     bool isSacrificing = false;
     public int currentCombo = 0;
     
+    public MMF_Player attackFeedbacks;
     void OnEnable()
     {
         model.SetActive(true);
@@ -132,6 +134,8 @@ public class BaseWeaponState : MonoBehaviour
         StartCoroutine(playerController.SetTriggerAsync(animationAttackTrigger, 0f));
 
         movementVector = playerController.transform.forward * speed;
+
+        attackFeedbacks?.PlayFeedbacks();
     }
 
     void CheckAttackCollision()

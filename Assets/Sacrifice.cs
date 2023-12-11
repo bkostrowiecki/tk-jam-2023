@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class Sacrifice : MonoBehaviour
@@ -24,6 +25,7 @@ public class Sacrifice : MonoBehaviour
 
     Vector3 movementVector;
     private Vector3 jumpStepVector;
+    public MMF_Player sacrificeFeedbacks;
 
     // Update is called once per frame
     void Update()
@@ -136,6 +138,9 @@ public class Sacrifice : MonoBehaviour
         if (sacrificeTarget != null)
         {
             StartSacrifice(weaponState);
+
+            sacrificeFeedbacks?.PlayFeedbacks();
+
             return true;
         }
 
