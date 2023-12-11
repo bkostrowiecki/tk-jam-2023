@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class PlayerJumpingState : BasePlayerState
@@ -15,6 +16,7 @@ public class PlayerJumpingState : BasePlayerState
     public AnimationCurve jumpCurve;
     public PlayerWalkingState playerWalkingState;
     private float cachedHeight;
+    public MMF_Player playerJumpingFeedbacks;
 
     void OnEnable()
     {
@@ -26,7 +28,7 @@ public class PlayerJumpingState : BasePlayerState
         playerController.ZeroGravity();
         playerController.HoldAttacks();
 
-        
+        playerJumpingFeedbacks?.PlayFeedbacks();
     }
 
     void OnDisable()

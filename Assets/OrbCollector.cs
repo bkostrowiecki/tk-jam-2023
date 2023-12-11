@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class OrbCollector : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class OrbCollector : MonoBehaviour
 
     public float activationTime;
     private bool isActivated;
+    public UnityEvent OnActivated;
 
     IEnumerator Start()
     {
@@ -18,6 +20,8 @@ public class OrbCollector : MonoBehaviour
         yield return new WaitForSecondsRealtime(activationTime);
 
         isActivated = true;
+
+        OnActivated?.Invoke();
     }
 
     void Update()
