@@ -15814,8 +15814,8 @@ MonoBehaviour:
         BoundRenderer: {fileID: 2046044533}
         Mode: 0
         PropertyName: _Tint
-        FlickerDuration: 0.1
-        FlickerOctave: 0.1
+        FlickerDuration: 0.3
+        FlickerOctave: 0.3
         FlickerColor: {r: 2, g: 2, b: 2, a: 1}
         MaterialIndexes: 
         UseMaterialPropertyBlocks: 0
@@ -15974,7 +15974,7 @@ MonoBehaviour:
             m_PreInfinity: 2
             m_PostInfinity: 2
             m_RotationOrder: 4
-          m_ImpulseDuration: 0.1
+          m_ImpulseDuration: 0.2
           m_ImpulseType: 0
           m_DissipationRate: 0
           m_RawSignal: {fileID: 0}
@@ -16005,7 +16005,7 @@ MonoBehaviour:
           m_DissipationMode: 2
           m_DissipationDistance: 100
           m_PropagationSpeed: 343
-        Velocity: {x: 0.1, y: 0.1, z: 0.1}
+        Velocity: {x: 0.15, y: 0.15, z: 0.15}
         ClearImpulseOnStop: 0
 --- !u!1 &1293055439
 GameObject:
