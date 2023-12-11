@@ -26,6 +26,8 @@ public class PlayerWalkingState : BasePlayerState
     [Header("Stamina")]
     public MMF_Player cannotUseStaminaFeedbacks;
 
+    public ParticleSystem stepsParticleSystem;
+
     #if UNITY_EDITOR
     void OnGUI()
     {
@@ -93,10 +95,15 @@ public class PlayerWalkingState : BasePlayerState
         if (movement.magnitude > 0)
         {
             playerController.animator.SetFloat("speedRelative", Mathf.Clamp01(lerpProgress * 2f));
+            if (movement.magnitude >= 1f)
+            {
+                if (!stepsParticleSystem.isPlaying) stepsParticleSystem?.Play();
+            }
         }
         else
         {
             playerController.animator.SetFloat("speedRelative", Mathf.Clamp01(0f));
+            stepsParticleSystem?.Stop();
         }
 
         playerController.characterController.Move(playerController.AddGravity(movement) * Time.deltaTime);
@@ -170,5 +177,7 @@ public class PlayerWalkingState : BasePlayerState
     void OnDisable()
     {
         lastGoalMovement = Vector3.zero;
+
+        if (stepsParticleSystem.isPlaying) stepsParticleSystem?.Stop();
     }
 }
