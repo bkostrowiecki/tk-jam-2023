@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4291315132519196043}
   - component: {fileID: 8727330484399065188}
+  - component: {fileID: 7337256502724446895}
   m_Layer: 8
   m_Name: Enemy Sensor
   m_TagString: Untagged
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 7
-  angle: 33.1
+  angle: 60
   height: 1.72
   meshColor: {r: 1, g: 0.9584457, b: 0, a: 0.18431373}
   objects:
@@ -61,6 +62,19 @@ MonoBehaviour:
   occlusionLayers:
     serializedVersion: 2
     m_Bits: 2039
+--- !u!114 &7337256502724446895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446513296382325901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66b08bb58a8a6db4bb7ecad20f07e03a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toFollow: {fileID: 1755476210293396368}
 --- !u!1 &970199951695439198
 GameObject:
   m_ObjectHideFlags: 0
@@ -5615,8 +5629,8 @@ MonoBehaviour:
     m_Bits: 8
   occlusionLayers:
     serializedVersion: 2
-    m_Bits: 2039
-  detectionRadius: 3
+    m_Bits: 17
+  detectionRadius: 2
   onDetected:
     m_PersistentCalls:
       m_Calls: []
@@ -6216,6 +6230,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1e3e4d05d0c3d841a7fe43d6ecfd00e, type: 3}
+--- !u!4 &1755476210293396368 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: e1e3e4d05d0c3d841a7fe43d6ecfd00e,
+    type: 3}
+  m_PrefabInstance: {fileID: 5312734381504702200}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1787940512655154025 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: e1e3e4d05d0c3d841a7fe43d6ecfd00e,

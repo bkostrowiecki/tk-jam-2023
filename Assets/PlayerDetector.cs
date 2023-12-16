@@ -45,22 +45,24 @@ public class PlayerDetector : MonoBehaviour
         {
             var overlapped = Physics.OverlapSphere(transform.position, detectionRadius, playerLayerMask);
 
-            if (overlapped.Count() > 0)
+            foreach (var obj in overlapped)
             {
-                if (shouldCheckForObstacles)
-                {
-                    var origin = overlapped[0].transform.position;
-                    var dest = transform.position;
+                var origin = obj.transform.position;
+                var dest = transform.position;
 
-                    if (Physics.Linecast(origin, dest, occlusionLayers))
-                    {
-                        return false;
-                    }
+                Debug.DrawLine(origin, dest, Color.black);
+
+                if (Physics.Linecast(origin, dest, occlusionLayers))
+                {
+                    continue;
                 }
+
                 isDetected = true;
-                detectedPlayer = overlapped[0].gameObject;
+                detectedPlayer = obj.gameObject;
 
                 onDetected?.Invoke(detectedPlayer);
+
+                break;
             }
         }
 
