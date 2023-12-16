@@ -12508,7 +12508,7 @@ Transform:
   m_GameObject: {fileID: 589004517}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.29, y: 1, z: 14.77}
+  m_LocalPosition: {x: -8.76, y: 1, z: 7.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13117,6 +13117,76 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 789406949}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &819437951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 819437952}
+  - component: {fileID: 819437953}
+  - component: {fileID: 819437954}
+  m_Layer: 3
+  m_Name: Mouse Indicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &819437952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819437951}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -8.76, y: 0.707, z: 7.4139996}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &819437953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819437951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 0443a009c3257634db82b0ec89daa782, type: 2}
+  m_DrawDistance: 1000
+  m_FadeScale: 0.9
+  m_StartAngleFade: 180
+  m_EndAngleFade: 180
+  m_UVScale: {x: 1, y: 1}
+  m_UVBias: {x: 0, y: 0}
+  m_DecalLayerMask: 1
+  m_ScaleMode: 0
+  m_Offset: {x: 0, y: 0, z: 1}
+  m_Size: {x: 1.5, y: 0.9, z: 2}
+  m_FadeFactor: 1
+--- !u!114 &819437954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819437951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6522ddfed773fd4d94f2abbc1709446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 589004519}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -28727,11 +28797,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: X Bot
       objectReference: {fileID: 0}
+    - target: {fileID: 3853268898807207900, guid: 7d03e811c6a5836499ca052dce3c46ba,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465940246521907071, guid: 7d03e811c6a5836499ca052dce3c46ba,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.7401
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465940246521907071, guid: 7d03e811c6a5836499ca052dce3c46ba,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -0.0000014716284
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465940246521907071, guid: 7d03e811c6a5836499ca052dce3c46ba,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.00008414779
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 7d03e811c6a5836499ca052dce3c46ba,
         type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 1c21cc949678068448d7cca2e2d9d445, type: 2}
+    - target: {fileID: 6148737315974723067, guid: 7d03e811c6a5836499ca052dce3c46ba,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7882376022164389543, guid: 7d03e811c6a5836499ca052dce3c46ba,
         type: 3}
       propertyPath: m_Layer
@@ -29996,6 +30091,7 @@ SceneRoots:
   - {fileID: 1321110487}
   - {fileID: 1696241753}
   - {fileID: 1207506597}
+  - {fileID: 819437952}
   - {fileID: 589004522}
   - {fileID: 1664301950}
   - {fileID: 1955188903}

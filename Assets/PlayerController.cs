@@ -471,6 +471,19 @@ public class PlayerController : MonoBehaviour
     {
         selectedWeapon.AddBlood(bloodIncrease);
     }
+
+    public Vector3 CalculateMouseDirection()
+    {
+        Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var plane = new Plane(Vector3.up, transform.position);
+        plane.Raycast(screenRay, out var distance);
+
+        Vector3 worldPoint = screenRay.GetPoint(distance);
+
+        var direction = (worldPoint - transform.position).normalized;
+
+        return direction;
+    }
 }
 
 public class HellDamage : BaseDamage

@@ -126,16 +126,7 @@ public class BaseWeaponState : MonoBehaviour
 
     void StartAttack()
     {
-        var mousePosition = Input.mousePosition;
-
-        Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        var plane = new Plane(Vector3.up, transform.position);
-        plane.Raycast(screenRay, out var distance);
-
-        Vector3 worldPoint = screenRay.GetPoint(distance);
-
-        var direction = (worldPoint - transform.position).normalized;
-        playerController.transform.forward = direction;
+        playerController.transform.forward = playerController.CalculateMouseDirection();
 
         currentCombo++;
 
