@@ -10338,5 +10338,5 @@ MonoBehaviour:
         RemapRangeFalloff: {x: 0, y: 1}
         Owner: {fileID: 1546778267235251577}
         DebugActive: 0
-        FreezeFrameDuration: 0.1
+        FreezeFrameDuration: 0.02
         MinimumTimescaleThreshold: 0.3

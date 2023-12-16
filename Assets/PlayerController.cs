@@ -241,7 +241,7 @@ public class PlayerController : MonoBehaviour
     }
     #endif
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, collectablesDetectionRadius);
