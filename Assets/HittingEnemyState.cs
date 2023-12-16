@@ -17,7 +17,7 @@ public class HittingEnemyState : BaseEnemyState
     public AnimationCurve hitAnimationCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
     float timer;
     private Vector3 newPosition;
-    public Vector2 hitTimeRange;
+    public List<Vector2> hitTimeRanges;
     public GameObject hitBox;
     public float doubleHitDistance;
     public string animationTrigger;
@@ -78,11 +78,17 @@ public class HittingEnemyState : BaseEnemyState
 
             return;
         }
-        if (timer > hitTimeRange.x && timer < hitTimeRange.y)
+
+        bool enabledHitBox = false;
+        foreach (var hitTimeRange in hitTimeRanges)
         {
-            EnableHitBox();
+            if (timer > hitTimeRange.x && timer < hitTimeRange.y)
+            {
+                EnableHitBox();
+                enabledHitBox = true;
+            }
         }
-        else
+        if (!enabledHitBox)
         {
             DisableHitBox();
         }

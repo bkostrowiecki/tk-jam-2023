@@ -5759,7 +5759,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hitTimeRange: {x: 0.92, y: 0.97}
+  hitTimeRanges:
+  - {x: 0.92, y: 0.97}
   hitBox: {fileID: 772962877057853584}
   doubleHitDistance: 2
   animationTrigger: punch
