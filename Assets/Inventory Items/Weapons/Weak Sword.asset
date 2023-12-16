@@ -15,5 +15,6 @@ MonoBehaviour:
   description: Sactificing this sword makes you run 10% faster
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   type: 0
-  requiredBlood: 10
+  requiredBlood: 100
   attackSpeed: 10
+  damage: 10

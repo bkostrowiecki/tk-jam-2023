@@ -12,6 +12,7 @@ public class WeaponSlot : MonoBehaviour
     public TMPro.TMP_Text bloodTmp;
     public Image sacrificePossibleImage;
     private IDisposable disposableSelectedWeaponObservable;
+    private IDisposable disposableBloodObservable;
 
     void Start()
     {
@@ -25,7 +26,11 @@ public class WeaponSlot : MonoBehaviour
                 return;
             }
 
-            bloodTmp.text = inventoryItem.blood.ToString();
+            disposableBloodObservable = inventoryItem.bloodSubject.Subscribe((x) =>
+            {
+                bloodTmp.text = inventoryItem.blood.ToString() + "/" + inventoryItem.inventoryItemSO.requiredBlood;
+            });
+
             slotImage.sprite = inventoryItem.inventoryItemSO.icon;
             sacrificePossibleImage.gameObject.SetActive(inventoryItem.CanSacrifice);
         });
@@ -33,6 +38,7 @@ public class WeaponSlot : MonoBehaviour
 
     void OnDestroy()
     {
+        disposableBloodObservable.Dispose();
         disposableSelectedWeaponObservable.Dispose();
     }
 }

@@ -62,6 +62,9 @@ public class PlayerController : MonoBehaviour
     public float regenerationDelay = 0.5f;
     private float lastStaminaUsageTimer;
 
+    [Header("Bloodlust")]
+    public int bloodIncrease = 10;
+
     [Header("Inventory")]
     public Inventory inventory;
     public PotionUsages potionUsages;
@@ -73,6 +76,7 @@ public class PlayerController : MonoBehaviour
     BehaviorSubject<InventoryItemSO> selectedPotionSOSubject;
     BehaviorSubject<int> selectedPotionAmountSubject;
     BehaviorSubject<InventoryItemSO> selectedWeaponSOSubject;
+    private InventoryItem selectedWeapon;
     BehaviorSubject<InventoryItem> selectedWeaponSubject;
 
     public IObservable<InventoryItemSO> SelectedPotionSOObservable => selectedPotionSOSubject.AsObservable();
@@ -113,7 +117,8 @@ public class PlayerController : MonoBehaviour
         selectedWeaponSOSubject = new BehaviorSubject<InventoryItemSO>(null);
 
         var inventoryItem = inventory.FindInventoryItemBySO(selectedWeaponSO);
-        selectedWeaponSubject = new BehaviorSubject<InventoryItem>(inventoryItem);
+        selectedWeapon = inventoryItem;
+        selectedWeaponSubject = new BehaviorSubject<InventoryItem>(selectedWeapon);
 
         weaponStates.SetCurrentWeapon(selectedWeaponSO);
 
@@ -393,7 +398,6 @@ public class PlayerController : MonoBehaviour
         }
 
         selectedWeaponSO = inventoryItemSO;
-
         weaponStates.SetCurrentWeapon(selectedWeaponSO);
     }
 
@@ -461,6 +465,11 @@ public class PlayerController : MonoBehaviour
         {
             ClearSelectedWeapon();
         }
+    }
+
+    public void GainBlood()
+    {
+        selectedWeapon.AddBlood(bloodIncrease);
     }
 }
 

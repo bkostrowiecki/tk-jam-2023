@@ -11506,7 +11506,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 13, y: -56.6}
+  m_AnchoredPosition: {x: 115.4, y: -78.5}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &397903605
@@ -11592,7 +11592,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 167.89233, w: 22.535889}
+  m_margin: {x: -64.25354, y: 0, z: 167.89233, w: 22.535889}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -11870,7 +11870,7 @@ RectTransform:
   m_Father: {fileID: 871713107}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12364,6 +12364,7 @@ MonoBehaviour:
   staminaJumpUsage: 50
   fullRegenerationTime: 10
   regenerationDelay: 2
+  bloodIncrease: 10
   inventory:
     inventoryItems:
     - inventoryItemSO: {fileID: 11400000, guid: 517e8d322584b0b4d981c9d3c63b9f61,
@@ -12373,7 +12374,7 @@ MonoBehaviour:
     - inventoryItemSO: {fileID: 11400000, guid: 79b4017a33af75f4cb73342fc388e0df,
         type: 2}
       amount: 5
-      blood: 5
+      blood: 0
   potionUsages: {fileID: 1953765479}
   potionUseBreakTime: 3
   selectedPotionSO: {fileID: 11400000, guid: 517e8d322584b0b4d981c9d3c63b9f61, type: 2}
@@ -13094,7 +13095,7 @@ RectTransform:
   m_Father: {fileID: 19895586}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -15137,7 +15138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1207506597
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22356,7 +22357,7 @@ RectTransform:
   m_Father: {fileID: 1102755770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -22884,7 +22885,7 @@ RectTransform:
   m_Father: {fileID: 267823767}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -29707,6 +29708,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 434753096458883604, guid: a2feae44ce9dfdc408675be6c9279e60,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 353.03653
+      objectReference: {fileID: 0}
+    - target: {fileID: 434753096458883604, guid: a2feae44ce9dfdc408675be6c9279e60,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.000038505492
+      objectReference: {fileID: 0}
+    - target: {fileID: 434753096458883604, guid: a2feae44ce9dfdc408675be6c9279e60,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -0.00067623984
+      objectReference: {fileID: 0}
     - target: {fileID: 601632869172585341, guid: a2feae44ce9dfdc408675be6c9279e60,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -29846,6 +29862,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 351.6675
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885843106119648093, guid: a2feae44ce9dfdc408675be6c9279e60,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885843106119648093, guid: a2feae44ce9dfdc408675be6c9279e60,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3417633635693860865, guid: a2feae44ce9dfdc408675be6c9279e60,
         type: 3}
