@@ -23,4 +23,14 @@ public class BaseEnemyState : MonoBehaviour
             enemyAI.navMeshAgent.angularSpeed = navMeshAgentSettingsOverride.angularSpeed;
         }
     }
+
+    public void DisableSteering()
+    {
+        enemyAI.navMeshAgent.enabled = false;
+    }
+
+    public void EnableSteering()
+    {
+        enemyAI.navMeshAgent.enabled = true;
+    }
 }

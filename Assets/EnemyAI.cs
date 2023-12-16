@@ -11,13 +11,14 @@ public class EnemyAI : MonoBehaviour
     public GameObject statesContainer;
     public NavMeshAgent navMeshAgent;
     public EnemySensor sensor;
-    GameObject player;
     Vector3? lastPlayerPosition = null;
     public Vector3? LastPlayerPosition => lastPlayerPosition;
     public PlayerDetector playerCloseDetector;
     public float memoryTime;
     float memoryTimer = 0f;
     bool isPlayerSeen = false;
+    bool isPlayerVisible;
+    Vector3? surePlayerPosition;
 
     public BaseEnemyState CurrentState
     {
@@ -32,6 +33,21 @@ public class EnemyAI : MonoBehaviour
             }
 
             return null;
+        }
+    }
+
+    public Vector3? SurePlayerPosition => surePlayerPosition;
+
+    public float DistanceToPlayer
+    {
+        get
+        {
+            if (SurePlayerPosition.HasValue)
+            {
+                return (SurePlayerPosition.Value - transform.position).magnitude;
+            }
+            
+            return Mathf.Infinity;
         }
     }
 
@@ -51,7 +67,7 @@ public class EnemyAI : MonoBehaviour
     {
         enemyDebug.Log(CurrentState.gameObject.name);
 
-        if (!isPlayerSeen && lastPlayerPosition.HasValue)
+        if (isPlayerSeen && lastPlayerPosition.HasValue)
         {
             memoryTimer -= Time.deltaTime;
             if (memoryTimer <= 0f)
@@ -74,6 +90,8 @@ public class EnemyAI : MonoBehaviour
 
         var isDetected = playerCloseDetector.Detect();
 
+        GameObject player;
+
         if (result > 0)
         {
             player = buffer[0];
@@ -86,14 +104,38 @@ public class EnemyAI : MonoBehaviour
             lastPlayerPosition = player.transform.position;
             memoryTimer = memoryTime;
         }
-        else
-        {
-            player = null;
-        }
 
         isPlayerSeen = lastPlayerPosition.HasValue;
 
         return isPlayerSeen;
+    }
+
+    public bool SensePlayerForSure()
+    {
+        GameObject[] buffer = new GameObject[1];
+
+        int result = sensor.Filter("Player", buffer);
+
+        var isDetected = playerCloseDetector.Detect();
+
+        GameObject player;
+
+        if (result > 0)
+        {
+            player = buffer[0];
+            surePlayerPosition = player.transform.position;
+            lastPlayerPosition = player.transform.position;
+        }
+        else if (isDetected)
+        {
+            player = playerCloseDetector.DetectedPlayer;
+            surePlayerPosition = player.transform.position;
+            lastPlayerPosition = player.transform.position;
+        }
+
+        isPlayerVisible = result > 0 || isDetected;
+
+        return isPlayerVisible;
     }
 
     public void ActivateState(BaseEnemyState baseEnemyState)

@@ -6,7 +6,10 @@ using UnityEngine.AI;
 public class ChasingEnemyState : BaseEnemyState
 {
     public WonderingEnemyState wonderingEnemyState;
+    public HittingEnemyState hitEnemyState;
     public NavMeshAgentSteeringOverride navMeshAgentSteeringOverride;
+
+    public float hitDistance = 1.5f;
 
     void OnEnable()
     {
@@ -18,6 +21,14 @@ public class ChasingEnemyState : BaseEnemyState
         if (enemyAI.SensePlayer())
         {
             enemyAI.navMeshAgent.SetDestination(enemyAI.LastPlayerPosition.Value);
+
+            if (enemyAI.navMeshAgent.remainingDistance < hitDistance)
+            {
+                if (enemyAI.SensePlayerForSure())
+                {
+                    enemyAI.ActivateState(hitEnemyState);
+                }
+            }
         }
         else
         {
