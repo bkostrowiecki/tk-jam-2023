@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class HittingEnemyState : BaseEnemyState
 {
@@ -19,6 +20,7 @@ public class HittingEnemyState : BaseEnemyState
     public Vector2 hitTimeRange;
     public GameObject hitBox;
     public float doubleHitDistance;
+    public string animationTrigger;
 
     void OnEnable()
     {
@@ -35,9 +37,11 @@ public class HittingEnemyState : BaseEnemyState
     {
         if (enemyAI.SensePlayerForSure() && enemyAI.SurePlayerPosition.HasValue)
         {
-            startPosition = enemyAI.navMeshAgent.transform.position;
-            hitDirection = Vector3.ProjectOnPlane((enemyAI.SurePlayerPosition.Value - enemyAI.navMeshAgent.transform.position).normalized, Vector3.up);
-            hitDestination = enemyAI.navMeshAgent.transform.position + hitDirection * hitDistance;
+            startPosition = enemyAI.transform.position;
+            hitDirection = Vector3.ProjectOnPlane((enemyAI.SurePlayerPosition.Value - enemyAI.transform.position).normalized, Vector3.up);
+            enemyAI.transform.forward = hitDirection;
+            hitDestination = enemyAI.transform.position + hitDirection * hitDistance;
+            enemyAI.animator.SetTrigger(animationTrigger);
         }
         else
         {
@@ -54,10 +58,16 @@ public class HittingEnemyState : BaseEnemyState
     {
         if (timer >= hitTime)
         {
+            enemyAI.animator.ResetTrigger(animationTrigger);
+
             timer = 0f;
+
+            newPosition = hitDestination;
 
             if (enemyAI.SensePlayerForSure() && enemyAI.SurePlayerPosition.HasValue && enemyAI.DistanceToPlayer < doubleHitDistance)
             {
+                enemyAI.transform.position = newPosition;
+
                 PrepareHit();
             }
             else
@@ -65,6 +75,8 @@ public class HittingEnemyState : BaseEnemyState
                 enemyAI.navMeshAgent.transform.position = newPosition;
                 enemyAI.ActivateState(returnEnemyState);
             }
+
+            return;
         }
         if (timer > hitTimeRange.x && timer < hitTimeRange.y)
         {
@@ -77,7 +89,7 @@ public class HittingEnemyState : BaseEnemyState
 
         timer += Time.deltaTime;
 
-        newPosition = Vector3.Lerp(startPosition, hitDestination, hitAnimationCurve.Evaluate(timer));
+        newPosition = Vector3.Lerp(startPosition, hitDestination, hitAnimationCurve.Evaluate(timer / hitTime));
 
         enemyAI.navMeshAgent.transform.position = newPosition;
     }

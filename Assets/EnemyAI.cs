@@ -19,6 +19,11 @@ public class EnemyAI : MonoBehaviour
     bool isPlayerSeen = false;
     bool isPlayerVisible;
     Vector3? surePlayerPosition;
+    Vector3 lastPosition;
+    float currentVelocity;
+    float currentSpeed;
+    public float maxSpeed;
+    public Animator animator;
 
     public BaseEnemyState CurrentState
     {
@@ -75,6 +80,13 @@ public class EnemyAI : MonoBehaviour
                 ForgetPlayer();
             }
         }
+
+        Vector3 velocity = (lastPosition - transform.position) / Time.deltaTime;
+        lastPosition = transform.position;
+
+        currentSpeed = velocity.magnitude;
+
+        animator.SetFloat("speed", currentSpeed / maxSpeed);
     }
 
     void ForgetPlayer()
