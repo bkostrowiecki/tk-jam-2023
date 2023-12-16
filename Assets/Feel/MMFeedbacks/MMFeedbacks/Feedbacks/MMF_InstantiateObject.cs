@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
@@ -256,5 +257,5 @@ namespace MoreMountains.Feedbacks
 					return Owner.transform.localScale;
 			}
 		}
-	}
+    }
 }
