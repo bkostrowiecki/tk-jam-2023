@@ -49,16 +49,18 @@ public class WonderingEnemyState : BaseEnemyState
         {
             nextDestination = AssignNewDestination();
         }
+
+        if (enemyAI.SensePlayer())
+        {
+            enemyAI.ActivateState(chasingState);
+            return;
+        }
+
         if (breakTimer > 0f)
         {
             breakTimer -= Time.deltaTime;
             enemyAI.enemyDebug.Log("Break " + breakTimer.ToString());
             return;
-        }
-
-        if (enemyAI.SensePlayer())
-        {
-            enemyAI.ActivateState(chasingState);
         }
 
         if (!enemyAI.navMeshAgent.hasPath)

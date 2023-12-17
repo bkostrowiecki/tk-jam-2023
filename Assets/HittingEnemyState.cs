@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,6 +23,9 @@ public class HittingEnemyState : BaseEnemyState
     public float doubleHitDistance;
     public string animationTrigger;
 
+    public MMF_Player hitStartFeedbacks;
+    public MMF_Player hitTouchFeedbacks;
+
     void OnEnable()
     {
         DisableSteering();
@@ -42,6 +46,9 @@ public class HittingEnemyState : BaseEnemyState
             enemyAI.transform.forward = hitDirection;
             hitDestination = enemyAI.transform.position + hitDirection * hitDistance;
             enemyAI.animator.SetTrigger(animationTrigger);
+
+            hitStartFeedbacks?.ResetFeedbacks();
+            hitStartFeedbacks?.PlayFeedbacks();
         }
         else
         {

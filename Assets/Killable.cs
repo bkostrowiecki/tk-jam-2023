@@ -7,10 +7,8 @@ using UnityEngine.Events;
 using UniRx;
 
 [Serializable]
-public class OnDamageEvent : UnityEvent<int, int, int>
+public class OnDamageEvent : UnityEvent<int>
 {
-    public int currentHealthPoints;
-    public int previousHealthPoints;
     public int damageTaken;
 }
 
@@ -57,12 +55,21 @@ public class Killable : MonoBehaviour
 
         currentHealthPointsSubject.OnNext(currentHealthPoints);
 
-        onDamage?.Invoke(currentHealthPoints, cachedHealthPoints, damageHealthPoints);
+        onDamage?.Invoke(damageHealthPoints);
 
         if (currentHealthPoints == 0)
         {
             Die();
         }
+    }
+
+    public void TakeHealing(BaseDamage damage)
+    {
+        var damageHealthPoints = damage.CalculateDamage();
+        var cachedHealthPoints = currentHealthPoints;
+        currentHealthPoints = Mathf.Clamp(currentHealthPoints + damageHealthPoints, 0, maxHealthPoints);
+
+        currentHealthPointsSubject.OnNext(currentHealthPoints);
     }
 
     void MaxHealthIncrease(int increment)
