@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using MoreMountains.Feedbacks;
 
 public class KillableSubscriber : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class KillableSubscriber : MonoBehaviour
 
     int current;
     int max;
+
+    public MMF_Player updateFeedbacks;
 
     void Start()
     {
@@ -31,5 +34,7 @@ public class KillableSubscriber : MonoBehaviour
     {
         slider.maxValue = max;
         slider.value = current;
+
+        updateFeedbacks?.PlayFeedbacks();
     }
 }

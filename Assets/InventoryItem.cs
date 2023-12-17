@@ -43,7 +43,7 @@ public class InventoryItem
     {
         this.blood += bloodAmount;
 
-        bloodSubject.OnNext(this.amount);
+        bloodSubject.OnNext(this.blood);
     }
 
     public bool CanSacrifice => this.blood >= inventoryItemSO.requiredBlood;

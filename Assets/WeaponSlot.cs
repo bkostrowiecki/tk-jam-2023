@@ -9,31 +9,44 @@ public class WeaponSlot : MonoBehaviour
 {
     public PlayerController playerController;
     public Image slotImage;
-    public TMPro.TMP_Text bloodTmp;
+    public Slider bloodSlider;
     public Image sacrificePossibleImage;
     private IDisposable disposableSelectedWeaponObservable;
     private IDisposable disposableBloodObservable;
 
     void Start()
     {
+        slotImage.gameObject.SetActive(true);
+
         disposableSelectedWeaponObservable = playerController.SelectedWeaponObservable.Subscribe((inventoryItem) =>
         {
             if (inventoryItem == null)
             {
                 slotImage.gameObject.SetActive(false);
-                bloodTmp.text = 0.ToString();
+                bloodSlider.maxValue = 1;
+                bloodSlider.value = 0;
+
+                ToggleSacrificePossible(false);
 
                 return;
             }
 
             disposableBloodObservable = inventoryItem.bloodSubject.Subscribe((x) =>
             {
-                bloodTmp.text = inventoryItem.blood.ToString() + "/" + inventoryItem.inventoryItemSO.requiredBlood;
+                bloodSlider.maxValue = inventoryItem.inventoryItemSO.requiredBlood;
+                bloodSlider.value = x;
+
+                ToggleSacrificePossible(inventoryItem.CanSacrifice);
             });
 
             slotImage.sprite = inventoryItem.inventoryItemSO.icon;
-            sacrificePossibleImage.gameObject.SetActive(inventoryItem.CanSacrifice);
+            ToggleSacrificePossible(inventoryItem.CanSacrifice);
         });
+    }
+
+    void ToggleSacrificePossible(bool isPossible)
+    {
+        sacrificePossibleImage.gameObject.SetActive(isPossible);
     }
 
     void OnDestroy()

@@ -4,11 +4,13 @@ using UnityEngine;
 using UniRx;
 using System;
 using UnityEngine.UI;
+using MoreMountains.Feedbacks;
 
 public class PlayerStaminaSubscriber : MonoBehaviour
 {
     public PlayerController playerController;
     public Slider slider;
+    public MMF_Player updateFeedbacks;
     int currentStamina;
     int maxStamina;
 
@@ -31,5 +33,7 @@ public class PlayerStaminaSubscriber : MonoBehaviour
     {
         slider.maxValue = maxStamina;
         slider.value = currentStamina;
+
+        updateFeedbacks?.PlayFeedbacks();
     }
 }

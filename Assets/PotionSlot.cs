@@ -16,6 +16,8 @@ public class PotionSlot : MonoBehaviour
 
     void Start()
     {
+        slotImage.gameObject.SetActive(true);
+
         potionSODisposable = playerController.SelectedPotionSOObservable.Subscribe((inventoryItemSO) =>
         {
             cachedInventoryItemSO = inventoryItemSO;
