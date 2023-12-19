@@ -9670,4 +9670,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0682054c30154914b886bd7c9bbaf7b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 2
+  time: 3
+  justDisable: 1

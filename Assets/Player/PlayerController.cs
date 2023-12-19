@@ -76,13 +76,9 @@ public class PlayerController : MonoBehaviour
     BehaviorSubject<InventoryItemSO> selectedPotionSOSubject;
     BehaviorSubject<int> selectedPotionAmountSubject;
     BehaviorSubject<InventoryItemSO> selectedWeaponSOSubject;
-    private InventoryItem selectedWeapon;
-    BehaviorSubject<InventoryItem> selectedWeaponSubject;
-
     public IObservable<InventoryItemSO> SelectedPotionSOObservable => selectedPotionSOSubject.AsObservable();
     public IObservable<int> SelectedPotionAmountObservable => selectedPotionAmountSubject.AsObservable();
     public IObservable<InventoryItemSO> SelectedWeaponSOObservable => selectedWeaponSOSubject.AsObservable();
-    public IObservable<InventoryItem> SelectedWeaponObservable => selectedWeaponSubject.AsObservable();
     public IObservable<List<InventoryItem>> InventoryItemsObservable => inventory.InventoryItemsObservable;
 
     [Header("Death")]
@@ -91,6 +87,7 @@ public class PlayerController : MonoBehaviour
     private bool isMovementHolded;
     private float cachedAnimatorSpeed;
     bool canAttack;
+    private InventoryItem selectedPotion;
 
     void Awake()
     {
@@ -114,13 +111,10 @@ public class PlayerController : MonoBehaviour
 
         selectedPotionSOSubject = new BehaviorSubject<InventoryItemSO>(selectedPotionSO);
         selectedPotionAmountSubject = new BehaviorSubject<int>(inventory.GetInventoryItemAmount(selectedPotionSO));
-        selectedWeaponSOSubject = new BehaviorSubject<InventoryItemSO>(null);
+        selectedWeaponSOSubject = new BehaviorSubject<InventoryItemSO>(selectedWeaponSO);
 
-        var inventoryItem = inventory.FindInventoryItemBySO(selectedWeaponSO);
-        selectedWeapon = inventoryItem;
-        selectedWeaponSubject = new BehaviorSubject<InventoryItem>(selectedWeapon);
-
-        weaponStates.SetCurrentWeapon(selectedWeaponSO);
+        SetWeapon(selectedWeaponSO);
+        SetPotion(selectedPotionSO);
 
         inventory.Emit();
     }
@@ -396,15 +390,16 @@ public class PlayerController : MonoBehaviour
         {
             throw new System.Exception("Selected inventory item is not a weapon " + inventoryItemSO.name);
         }
-
         selectedWeaponSO = inventoryItemSO;
-        weaponStates.SetCurrentWeapon(selectedWeaponSO);
+        weaponStates.SetCurrentWeapon(inventoryItemSO);
+        selectedWeaponSOSubject.OnNext(selectedWeaponSO);
     }
 
     void ClearSelectedWeapon()
     {
         selectedWeaponSO = null;
         weaponStates.SetCurrentWeapon(null);
+        selectedWeaponSOSubject.OnNext(selectedWeaponSO);
     }
 
     public void Die()
@@ -465,11 +460,16 @@ public class PlayerController : MonoBehaviour
         {
             ClearSelectedWeapon();
         }
+        else
+        {
+            selectedWeaponSOSubject.OnNext(selectedWeaponSO);
+        }
     }
 
     public void GainBlood()
     {
-        selectedWeapon.AddBlood(bloodIncrease);
+        var inventoryItem = inventory.FindInventoryItemBySOWithHighestBlood(selectedWeaponSO);
+        inventoryItem.AddBlood(bloodIncrease);
     }
 
     public Vector3 CalculateMouseDirection()

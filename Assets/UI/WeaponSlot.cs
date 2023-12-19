@@ -18,8 +18,10 @@ public class WeaponSlot : MonoBehaviour
     {
         slotImage.gameObject.SetActive(true);
 
-        disposableSelectedWeaponObservable = playerController.SelectedWeaponObservable.Subscribe((inventoryItem) =>
+        disposableSelectedWeaponObservable = playerController.SelectedWeaponSOObservable.Subscribe((inventoryItemSO) =>
         {
+            var inventoryItem = playerController.inventory.FindInventoryItemBySOWithHighestBlood(inventoryItemSO);
+
             if (inventoryItem == null)
             {
                 slotImage.gameObject.SetActive(false);

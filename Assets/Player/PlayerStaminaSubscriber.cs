@@ -34,6 +34,9 @@ public class PlayerStaminaSubscriber : MonoBehaviour
         slider.maxValue = maxStamina;
         slider.value = currentStamina;
 
-        updateFeedbacks?.PlayFeedbacks();
+        if (currentStamina < maxStamina)
+        {
+            updateFeedbacks?.PlayFeedbacks();
+        }
     }
 }

@@ -71,6 +71,8 @@ public class Sacrifice : MonoBehaviour
 
                 sacrificeTarget.GetComponent<Sacrificable>().MakeLayDead();
                 weaponState.model.SetActive(false);
+
+                playerController.UseWeapon();
             }
         }
     }

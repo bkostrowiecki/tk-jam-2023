@@ -76,4 +76,25 @@ public class Inventory
     {
         return inventoryItems.Find((item) => item.inventoryItemSO == inventoryItemSO);
     }
+
+    public InventoryItem FindInventoryItemBySOWithHighestBlood(InventoryItemSO inventoryItemSO)
+    {
+        var items = inventoryItems.FindAll((item) => item.inventoryItemSO == inventoryItemSO);
+
+        if (items.Count == 0)
+        {
+            return null;
+        }
+
+        var last = items[0];
+        foreach (var item in items)
+        {
+            if (last.blood < item.blood)
+            {
+                last = item;
+            }
+        }
+
+        return last;
+    }
 }

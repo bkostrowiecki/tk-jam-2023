@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using System;
 
 public class InventoryItemSlot : MonoBehaviour
 {
     public TMPro.TMP_Text amountTmp;
     public Slider bloodSlider;
     public Image iconImage;
+    public Image selectionImage;
+    public UnityEvent onHover = new();
+    public UnityEvent offHover = new();
+    public UnityEvent onSelect = new();
+    public Color selectedColor;
+    public Color neutralColor;
 
     public void ApplyInventoryItem(InventoryItem inventoryItem)
     {
@@ -19,20 +27,11 @@ public class InventoryItemSlot : MonoBehaviour
             bloodSlider.wholeNumbers = true;
             bloodSlider.maxValue = inventoryItem.inventoryItemSO.requiredBlood;
         }
-        else if (inventoryItem.inventoryItemSO.IsPotion)
-        {
-            amountTmp.gameObject.SetActive(true);
-        }
 
         iconImage.sprite = inventoryItem.inventoryItemSO.icon;
 
         inventoryItem.AmountObservable.Subscribe((amount) =>
         {
-            if (inventoryItem.inventoryItemSO.IsWeapon)
-            {
-                return;
-            }
-
             amountTmp.text = amount.ToString();
         });
 
@@ -40,5 +39,30 @@ public class InventoryItemSlot : MonoBehaviour
         {
             bloodSlider.value = blood;
         });
+    }
+
+    public void HandleOnClick()
+    {
+        onSelect?.Invoke();
+    }
+
+    public void HandleOnHover()
+    {
+        onHover?.Invoke();
+    }
+
+    public void HandleOffHover()
+    {
+        offHover?.Invoke();
+    }
+
+    public void MarkUnselected()
+    {
+        selectionImage.gameObject.SetActive(false);
+    }
+
+    public void MarkSelected()
+    {
+        selectionImage.gameObject.SetActive(true);
     }
 }
