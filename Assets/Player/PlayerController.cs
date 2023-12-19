@@ -180,7 +180,7 @@ public class PlayerController : MonoBehaviour
             RecoverPosition();
         }
 
-        if (Input.GetButton("Fire2"))
+        if (!InputExtensions.MouseOverUI() && Input.GetButtonDown("Fire2"))
         {
             TryUsePotion();
         }

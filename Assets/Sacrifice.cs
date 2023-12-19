@@ -27,6 +27,8 @@ public class Sacrifice : MonoBehaviour
     private Vector3 jumpStepVector;
     public MMF_Player sacrificeFeedbacks;
 
+    bool haveUsedWeapon = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -62,17 +64,25 @@ public class Sacrifice : MonoBehaviour
                 StartCoroutine(playerController.ResetTriggerAsync(animationFinishSacrificeTrigger, 0f));
 
                 weaponState.model.SetActive(true);
-                playerController.UseWeapon();
+                haveUsedWeapon = false;
 
             }
             else if (sacrificeTimer + sacrificeJumpTime + sacrificeDoneTime < Time.time)
             {
                 StartCoroutine(playerController.ResetTriggerAsync(animationJumpSacrificeTrigger, 0f));
 
-                sacrificeTarget.GetComponent<Sacrificable>().MakeLayDead();
-                weaponState.model.SetActive(false);
+                if (!haveUsedWeapon)
+                {
+                    playerController.UseWeapon();
+                    haveUsedWeapon = true;
 
-                playerController.UseWeapon();
+                    if (sacrificeTarget != null)
+                    {
+                        sacrificeTarget.GetComponent<Sacrificable>().MakeLayDead();
+                    }
+
+                    weaponState.model.SetActive(false);
+                }
             }
         }
     }

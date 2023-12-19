@@ -60,6 +60,8 @@ public class BaseWeaponState : MonoBehaviour
 
     void Update()
     {
+        if (!InputExtensions.MouseOverUI())
+        {
         if (Input.GetButtonDown("Fire1") && !attackTimer.HasValue && !sacrifice.IsSacrificing)
         {
             StartAttack();
@@ -71,6 +73,7 @@ public class BaseWeaponState : MonoBehaviour
             {
                 currentCombo = 0;
             }
+        }
         }
 
         if (attackTimer.HasValue)

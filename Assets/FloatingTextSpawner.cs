@@ -43,15 +43,15 @@ public class FloatingTextSpawner : MonoBehaviour
     public void SpawnText(string text)
     {
         var instance = GetPooledObject(transform.position, Quaternion.identity);
-        instance.SetText(text);
-        instance.SetColor(color);
+        instance?.SetText(text);
+        instance?.SetColor(color);
     }
 
     public void SpawnNumber(int number)
     {
         var instance = GetPooledObject(transform.position, Quaternion.identity);
-        instance.SetText(number.ToString());
-        instance.SetColor(color);
+        instance?.SetText(number.ToString());
+        instance?.SetColor(color);
     }
 
     public void SpawnNegatedNumber(int number)

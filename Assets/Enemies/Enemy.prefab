@@ -98,7 +98,7 @@ MonoBehaviour:
   meshColor: {r: 1, g: 0.9584457, b: 0, a: 0.18431373}
   objects:
   - {fileID: 0}
-  - {fileID: 2248821404157170129}
+  - {fileID: 0}
   scanFrequency: 30
   layers:
     serializedVersion: 2
@@ -5523,6 +5523,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8057070331609796614}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   destroyAfterDeadTime: 0.7
 --- !u!114 &6827253973057528859
 MonoBehaviour:
@@ -5536,7 +5548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e26b4527cef1ec44b3bc0459743006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 30
+  maxHealthPoints: 100
   canTakeDamage: 1
   onDamage:
     m_PersistentCalls:

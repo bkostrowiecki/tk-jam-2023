@@ -108,6 +108,7 @@ public class InventorySubscriber : MonoBehaviour
     void UpdateSlots(List<InventoryItem> inventoryItems)
     {
         List<InventoryItem> copy = new List<InventoryItem>(inventoryItems.ToArray());
+
         foreach (var inventoryItem in inventoryItems)
         {
             var found = inventoryItemSlots.ContainsKey(inventoryItem);

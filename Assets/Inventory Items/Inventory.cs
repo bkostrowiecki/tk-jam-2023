@@ -58,6 +58,12 @@ public class Inventory
 
         inventoryItem.UseAmount(amount);
 
+        if (inventoryItem.inventoryItemSO.IsWeapon)
+        {
+            inventoryItem.blood = 0;
+            inventoryItem.bloodSubject.OnNext(0);
+        }
+
         if (inventoryItem.amount == 0)
         {
             inventoryItems.Remove(inventoryItem);
