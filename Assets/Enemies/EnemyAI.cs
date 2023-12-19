@@ -86,7 +86,7 @@ public class EnemyAI : MonoBehaviour
 
         currentSpeed = velocity.magnitude;
 
-        animator.SetFloat("speed", currentSpeed / maxSpeed);
+        animator?.SetFloat("speed", currentSpeed / maxSpeed);
     }
 
     void ForgetPlayer()

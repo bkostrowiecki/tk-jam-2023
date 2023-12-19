@@ -1,23 +1,16 @@
-﻿// Copyright 2018-2020 tripolygon Inc. All Rights Reserved.
-
-#define UMODELER_LITE
+﻿// Copyright 2018-2021 tripolygon Inc. All Rights Reserved.
 
 using UnityEngine;
 using UnityEditor;
-using System.Reflection;
-using System.Collections.Generic;
+using tripolygon.UModeler;
 using System;
 using System.Linq;
-#if !UMODELER_LITE
-using tripolygon.UModeler;
-#else
-using tripolygon.UModelerLite;
-#endif
+using System.Reflection;
+using System.Collections.Generic;
 
-namespace TPUModelerLiteEditor
+namespace TPUModelerEditor
 {
-    [CustomEditor(typeof(MeshFilter), isFallback = true)]
-    [UnityEditor.InitializeOnLoad]
+    [CustomEditor(typeof(MeshFilter))]
     public class MeshFilterEditor : Editor
     {
         private static readonly Dictionary<Type, MethodInfo> methodByType;
@@ -47,30 +40,40 @@ namespace TPUModelerLiteEditor
 
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
-
             MeshFilter mf = (MeshFilter)target;
-            var modelerComponent = mf.GetComponents(typeof(Component)).FirstOrDefault(item => item != null && item.GetType().Name == nameof(UModeler));
-            if (methodInfo == null)
+            if (mf.GetComponent<UModeler>() == null)
             {
-                if (modelerComponent != null && methodByType.ContainsKey(modelerComponent.GetType()) == true)
-                {
-                    methodInfo = methodByType[modelerComponent.GetType()];
-                }
+                base.OnInspectorGUI();
             }
-
-            if (methodInfo != null)
+            else
             {
-                methodInfo.Invoke(null, new object[] { modelerComponent, foldedOut });
+                var enabled = GUI.enabled;
+                GUI.enabled = false;
+                base.OnInspectorGUI();
+                GUI.enabled = true;
+                GUI.enabled = enabled;
+                var modelerComponent = mf.GetComponents(typeof(Component)).FirstOrDefault(item => item != null && item.GetType().Name == nameof(UModeler));
+                if (methodInfo == null)
+                {
+                    if (modelerComponent != null && methodByType.ContainsKey(modelerComponent.GetType()) == true)
+                    {
+                        methodInfo = methodByType[modelerComponent.GetType()];
+                    }
+                }
+
+                if (methodInfo != null)
+                {
+                    methodInfo.Invoke(null, new object[] { modelerComponent, foldedOut });
+                }
             }
         }
 
         public static void OnMeshFilterGUI(UModeler modeler, bool foldedOut)
         {
-            if (modeler != null && !EditorUtil.IsPrefabOnProject(modeler.gameObject))
+            if (modeler != null && EditorUtil.IsPrefabOnProject(modeler.gameObject) == false && EditorUtil.IsPartOfPrefabInstance(modeler.gameObject) == false)
             {
                 var mf = modeler.GetComponent<MeshFilter>();
-                foldedOut = EditorUtil.Foldout(foldedOut, "UModeler Light .asset");
+                foldedOut = EditorUtil.Foldout(foldedOut, "UModeler .asset");
                 Mesh mesh = modeler.renderableMeshFilter != null ? modeler.renderableMeshFilter.sharedMesh : null;
                 if (foldedOut && mesh != null)
                 {
@@ -87,14 +90,14 @@ namespace TPUModelerLiteEditor
                         string path = modeler.IsAssetPathValid() ? modeler.assetPath : SystemUtil.MeshAssetFolder + "/" + mesh.name + ".asset";
                         if (SystemUtil.SaveMeshAsset(modeler, path))
                         {
-                            EditorUtility.SetDirty(mf);
+                            EditorUtil.SetDirty(mf);
                         }
                     }
                     else if (GUILayout.Button("Save As"))
                     {
                         if (SystemUtil.SaveMeshAsset(modeler))
                         {
-                            EditorUtility.SetDirty(mf);
+                            EditorUtil.SetDirty(mf);
                         }
                     }
                     else

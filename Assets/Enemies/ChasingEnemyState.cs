@@ -22,11 +22,14 @@ public class ChasingEnemyState : BaseEnemyState
         {
             enemyAI.navMeshAgent.SetDestination(enemyAI.LastPlayerPosition.Value);
 
-            if (enemyAI.navMeshAgent.remainingDistance < hitDistance)
+            if (hitEnemyState != null)
             {
-                if (enemyAI.SensePlayerForSure())
+                if (enemyAI.navMeshAgent.remainingDistance < hitDistance)
                 {
-                    enemyAI.ActivateState(hitEnemyState);
+                    if (enemyAI.SensePlayerForSure())
+                    {
+                        enemyAI.ActivateState(hitEnemyState);
+                    }
                 }
             }
         }

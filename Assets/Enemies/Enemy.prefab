@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 8792181786875202757, guid: d9dabf5131146fa459cdda878e1d5a61, type: 3}
   color: {r: 1, g: 1, b: 1, a: 1}
-  poolInstancesCount: 5
+  poolInstancesCount: 20
 --- !u!1 &446513296382325901
 GameObject:
   m_ObjectHideFlags: 0
