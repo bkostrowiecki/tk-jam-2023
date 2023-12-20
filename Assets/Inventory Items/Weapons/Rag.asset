@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33770697e44bbcc4b8434e8699457846, type: 3}
-  m_Name: Weak Sword
+  m_Name: Rag
   m_EditorClassIdentifier: 
-  description: Sacrificing this sword makes you run 10% faster
+  description: Sacrificing this item increases your stamina by 20 points
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   type: 0
-  requiredBlood: 30
+  requiredBlood: 50
   attackSpeed: 10
-  damage: 10
+  damage: 5

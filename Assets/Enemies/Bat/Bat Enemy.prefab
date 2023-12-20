@@ -300,6 +300,11 @@ PrefabInstance:
         type: 3}
       propertyPath: animator
       value: 
+      objectReference: {fileID: 6466148909844068188}
+    - target: {fileID: 3896267086922668481, guid: a2feae44ce9dfdc408675be6c9279e60,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4349115326529475661, guid: a2feae44ce9dfdc408675be6c9279e60,
         type: 3}
@@ -1614,13 +1619,13 @@ PrefabInstance:
     - target: {fileID: 8727330484399065188, guid: a2feae44ce9dfdc408675be6c9279e60,
         type: 3}
       propertyPath: objects.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8727330484399065188, guid: a2feae44ce9dfdc408675be6c9279e60,
         type: 3}
       propertyPath: objects.Array.data[0]
       value: 
-      objectReference: {fileID: 2168134231318787678}
+      objectReference: {fileID: 0}
     - target: {fileID: 8727330484399065188, guid: a2feae44ce9dfdc408675be6c9279e60,
         type: 3}
       propertyPath: objects.Array.data[3]
@@ -1796,6 +1801,12 @@ SkinnedMeshRenderer:
 --- !u!137 &3158603183414810682 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2522976048876081911, guid: 8908d7a988c98d94f9e8c9ba8ac5f9c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 636966350505921229}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6466148909844068188 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 8908d7a988c98d94f9e8c9ba8ac5f9c2,
     type: 3}
   m_PrefabInstance: {fileID: 636966350505921229}
   m_PrefabAsset: {fileID: 0}

@@ -23,7 +23,7 @@ public class BaseWeaponState : MonoBehaviour
     public float animationAttackSpeed;
     public float comboLastHitAnimationSpeed;
 
-    
+
 
     [Header("Slide parameters")]
     public float speed;
@@ -39,14 +39,14 @@ public class BaseWeaponState : MonoBehaviour
     public int comboLength;
     public float comboRecoilTime;
 
-    
+
     float? attackTimer = null;
     List<Collider> alreadyHandled = new List<Collider>();
     Vector3 movementVector;
     private Vector3 jumpStepVector;
     bool isSacrificing = false;
     public int currentCombo = 0;
-    
+
     public MMF_Player attackFeedbacks;
     void OnEnable()
     {
@@ -62,18 +62,22 @@ public class BaseWeaponState : MonoBehaviour
     {
         if (!InputExtensions.MouseOverUI())
         {
-        if (Input.GetButtonDown("Fire1") && !attackTimer.HasValue && !sacrifice.IsSacrificing)
-        {
-            StartAttack();
-        }
-
-        if (Input.GetKeyDown(KeyCode.E) && !sacrifice.IsSacrificing && !attackTimer.HasValue)
-        {
-            if (sacrifice.MakeSacrifice(this))
+            if (Input.GetButtonDown("Fire1") && !attackTimer.HasValue && !sacrifice.IsSacrificing)
             {
-                currentCombo = 0;
+                StartAttack();
             }
-        }
+
+            if (Input.GetKeyDown(KeyCode.E) && !sacrifice.IsSacrificing && !attackTimer.HasValue)
+            {
+                if (playerController.CanSacrifice)
+                {
+                    if (sacrifice.MakeSacrifice(this))
+                    {
+                        currentCombo = 0;
+                    }
+                }
+
+            }
         }
 
         if (attackTimer.HasValue)

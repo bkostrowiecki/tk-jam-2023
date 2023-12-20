@@ -70,7 +70,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        enemyDebug.Log(CurrentState.gameObject.name);
+        // enemyDebug.Log(CurrentState.gameObject.name);
 
         if (isPlayerSeen && lastPlayerPosition.HasValue)
         {
