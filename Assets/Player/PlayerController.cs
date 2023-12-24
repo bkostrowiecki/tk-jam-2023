@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection.Emit;
+using System.Runtime.Serialization.Formatters.Binary;
 using MoreMountains.Feedbacks;
 using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
+[Serializable]
 public class ReactDistance
 {
     public PlayerReactArea area;
@@ -20,6 +23,9 @@ public class PlayerController : MonoBehaviour
     public bool isDebugging = false;
 
     public GameObject statesContainer;
+    [Header("Saves")]
+    public ItemsFeederSO itemsFeederSO;
+
     [Header("Input")]
     public Transform playerRotationBaseTransform;
     [Header("Internals")]
@@ -89,6 +95,8 @@ public class PlayerController : MonoBehaviour
     bool canAttack;
     private InventoryItem selectedPotion;
 
+    public bool shouldStartOver = false;
+
     void Awake()
     {
         states = statesContainer.GetComponentsInChildren<BasePlayerState>(true);
@@ -113,10 +121,32 @@ public class PlayerController : MonoBehaviour
         selectedPotionAmountSubject = new BehaviorSubject<int>(inventory.GetInventoryItemAmount(selectedPotionSO));
         selectedWeaponSOSubject = new BehaviorSubject<InventoryItemSO>(selectedWeaponSO);
 
+        if (!shouldStartOver)
+        {
+            var path = Application.persistentDataPath + "/rogal";
+
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            InventorySaveDto data = formatter.Deserialize(stream) as InventorySaveDto;
+            stream.Close();
+
+            inventory.ApplySave(data, itemsFeederSO);
+        }
+
         SetWeapon(selectedWeaponSO);
         SetPotion(selectedPotionSO);
 
         inventory.Emit();
+    }
+
+    void OnDisable()
+    {
+        var path = Application.persistentDataPath + "/rogal";
+
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
+        formatter.Serialize(stream, inventory.InventorySaveDto);
+        stream.Close();
     }
 
     public Vector3 AddGravity(Vector3 movement)
@@ -382,6 +412,13 @@ public class PlayerController : MonoBehaviour
 
     public void SetPotion(InventoryItemSO inventoryItemSO)
     {
+        if (inventoryItemSO == null)
+        {
+            ClearSelectedPotion();
+
+            return;
+        }
+
         if (!inventoryItemSO.IsPotion)
         {
             throw new System.Exception("Selected inventory item is not a potion " + inventoryItemSO.name);
@@ -396,10 +433,18 @@ public class PlayerController : MonoBehaviour
 
     public void SetWeapon(InventoryItemSO inventoryItemSO)
     {
+        if (inventoryItemSO == null)
+        {
+            ClearSelectedWeapon();
+
+            return;
+        }
+
         if (!inventoryItemSO.IsWeapon)
         {
             throw new System.Exception("Selected inventory item is not a weapon " + inventoryItemSO.name);
         }
+
         selectedWeaponSO = inventoryItemSO;
         weaponStates.SetCurrentWeapon(inventoryItemSO);
         selectedWeaponSOSubject.OnNext(selectedWeaponSO);
@@ -493,6 +538,29 @@ public class PlayerController : MonoBehaviour
         var direction = (worldPoint - transform.position).normalized;
 
         return direction;
+    }
+
+    public void React()
+    {
+        playerReactAreas.Sort(SortAreas);
+
+        if (playerReactAreas.Count > 0)
+        {
+            var first = playerReactAreas[0];
+
+            first.area.React();
+        }
+    }
+
+    int SortAreas(ReactDistance x, ReactDistance y)
+    {
+        float sort = y.distance - x.distance;
+        return sort < 0 ? -1 : 1;
+    }
+
+    public void TakeItems(Inventory inventory)
+    {
+        this.inventory.TakeFromOtherInventory(inventory);
     }
 }
 

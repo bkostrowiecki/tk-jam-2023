@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33770697e44bbcc4b8434e8699457846, type: 3}
   m_Name: Bucket
   m_EditorClassIdentifier: 
-  description: Recovers 20 health points
+  itemName: Bucket
+  description: You are immortal for 10 seconds
   icon: {fileID: 21300000, guid: ac5088c78721c8345bb9c1270f062c22, type: 3}
   type: 1
   requiredBlood: 10

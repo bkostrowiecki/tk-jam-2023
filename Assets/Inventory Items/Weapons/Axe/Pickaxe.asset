@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33770697e44bbcc4b8434e8699457846, type: 3}
   m_Name: Pickaxe
   m_EditorClassIdentifier: 
+  itemName: Pickaxe
   description: Sacrificing this item increases your stamina by 20 points
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   type: 0

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33770697e44bbcc4b8434e8699457846, type: 3}
   m_Name: Apple
   m_EditorClassIdentifier: 
-  description: Recovers 20 health points
+  itemName: Apple
+  description: Recovers 50 health points
   icon: {fileID: 21300000, guid: 7c184b30d6563f3409c9f6a490a494e9, type: 3}
   type: 1
   requiredBlood: 10

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
@@ -61,6 +62,8 @@ public class PlayerWalkingState : BasePlayerState
 
         HandleAccelerationProgress(rawInput);
 
+        HandleReactions();
+
         Vector3 goalMovement = projectedInputByCamera == Vector3.zero
             ? lastGoalMovement
             : projectedInputByCamera.normalized * speed;
@@ -69,6 +72,14 @@ public class PlayerWalkingState : BasePlayerState
 
         ApplyMovement(goalMovement);
         ApplyRotation();
+    }
+
+    private void HandleReactions()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            playerController.React();
+        }
     }
 
     private void HandleJumping()

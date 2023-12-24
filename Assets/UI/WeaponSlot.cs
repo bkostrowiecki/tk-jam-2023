@@ -53,8 +53,8 @@ public class WeaponSlot : MonoBehaviour
 
     void OnDestroy()
     {
-        disposableBloodObservable.Dispose();
-        disposableSelectedWeaponObservable.Dispose();
+        disposableBloodObservable?.Dispose();
+        disposableSelectedWeaponObservable?.Dispose();
     }
 }
 

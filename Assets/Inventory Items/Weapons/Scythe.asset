@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33770697e44bbcc4b8434e8699457846, type: 3}
   m_Name: Scythe
   m_EditorClassIdentifier: 
+  itemName: Scythe
   description: Sactificing this sword makes you run 10% stronger
   icon: {fileID: 21300000, guid: d29f2ba46fa95e44f804e3d81180263c, type: 3}
   type: 0

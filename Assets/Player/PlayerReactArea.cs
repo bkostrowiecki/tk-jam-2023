@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,9 @@ public class PlayerReactArea : MonoBehaviour
     PlayerController playerController;
     public UnityEvent onReactionPossible = new UnityEvent();
     public UnityEvent onReactionImpossible = new UnityEvent();
+    public UnityEvent onReact = new UnityEvent();
+
+    public bool isOneTimer = true;
 
     void Update()
     {
@@ -18,9 +22,17 @@ public class PlayerReactArea : MonoBehaviour
         {
             var colliders = Physics.OverlapSphere(transform.position, reactRadius, playerLayerMask);
 
-            var playerCollider = colliders[0];
+            var withTag = (new List<Collider>(colliders)).Find((item) => item.CompareTag("Player"));
 
-            playerController = playerCollider.GetComponent<PlayerController>();
+            if (withTag != null)
+            {
+                playerController = withTag.GetComponent<PlayerController>();
+            }
+            else
+            {
+                onReactionImpossible?.Invoke();
+                playerController = null;
+            }
         }
         else
         {
@@ -42,5 +54,17 @@ public class PlayerReactArea : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, reactRadius);
+    }
+
+    public void React()
+    {
+        onReact?.Invoke();
+
+        if (isOneTimer)
+        {
+            enabled = false;
+        }
+
+        onReactionImpossible?.Invoke();
     }
 }

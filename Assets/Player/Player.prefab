@@ -10389,7 +10389,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &928953902065046364
 Transform:
   m_ObjectHideFlags: 0
@@ -12010,7 +12010,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6194532200447132228
 Transform:
   m_ObjectHideFlags: 0
@@ -12446,7 +12446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3773329246052934342
 Transform:
   m_ObjectHideFlags: 0
@@ -12569,6 +12569,7 @@ MonoBehaviour:
   characterController: {fileID: 8960015159715051983}
   isDebugging: 0
   statesContainer: {fileID: 7153184499816670058}
+  itemsFeederSO: {fileID: 11400000, guid: 7d9b51813f6cec84486ff154b659eabe, type: 2}
   playerRotationBaseTransform: {fileID: 0}
   killable: {fileID: 6187673845054099296}
   animator: {fileID: 1016674963527257678}
@@ -12584,6 +12585,7 @@ MonoBehaviour:
   collectablesLayerMask:
     serializedVersion: 2
     m_Bits: 64
+  playerReactAreas: []
   becomeImmortalFeedbacks: {fileID: 3095189898716165584}
   hitTimeImmortality: 1
   maxStamina: 100
@@ -12635,8 +12637,8 @@ MonoBehaviour:
       blood: 0
   potionUsages: {fileID: 3773232254330892531}
   potionUseBreakTime: 3
-  selectedPotionSO: {fileID: 11400000, guid: 17689bf61fac9fe4e9a4bef913fc231a, type: 2}
-  selectedWeaponSO: {fileID: 11400000, guid: 79b4017a33af75f4cb73342fc388e0df, type: 2}
+  selectedPotionSO: {fileID: 0}
+  selectedWeaponSO: {fileID: 0}
   dieReactionDelay: 2.4
   onDied:
     m_PersistentCalls:
@@ -12653,6 +12655,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  shouldStartOver: 0
 --- !u!143 &8960015159715051983
 CharacterController:
   m_ObjectHideFlags: 0
@@ -13842,7 +13845,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5035119822709132327
 Transform:
   m_ObjectHideFlags: 0
@@ -20370,7 +20373,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6242597222956070453
 Transform:
   m_ObjectHideFlags: 0
@@ -21059,7 +21062,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1351399406985260523
 Transform:
   m_ObjectHideFlags: 0
@@ -26287,7 +26290,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1654287823175392466
 Transform:
   m_ObjectHideFlags: 0
@@ -26687,7 +26690,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4681477182887094656
 Transform:
   m_ObjectHideFlags: 0

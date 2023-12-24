@@ -2,6 +2,30 @@ using System;
 using System.Collections.Generic;
 using UniRx;
 
+[Serializable]
+public class InventorySaveDto
+{
+    public List<InventoryItemSaveDto> inventoryItems = new();
+}
+
+[Serializable]
+public class InventoryItemSaveDto
+{
+    public string itemName;
+    public int amount;
+    public int blood;
+
+    public static InventoryItemSaveDto CreateFromInventoryItem(InventoryItem inventoryItem)
+    {
+        return new InventoryItemSaveDto
+        {
+            itemName = inventoryItem.inventoryItemSO.itemName,
+            amount = inventoryItem.amount,
+            blood = inventoryItem.blood
+        };
+    }
+}
+
 [System.Serializable]
 public class Inventory
 {
@@ -14,6 +38,24 @@ public class Inventory
     public Inventory()
     {
         inventoryItemsSubject = new BehaviorSubject<List<InventoryItem>>(inventoryItems);
+    }
+
+    public InventorySaveDto InventorySaveDto
+    {
+        get
+        {
+            var items = new List<InventoryItemSaveDto>();
+
+            foreach (var item in inventoryItems)
+            {
+                items.Add(InventoryItemSaveDto.CreateFromInventoryItem(item));
+            }
+
+            return new InventorySaveDto
+            {
+                inventoryItems = items
+            };
+        }
     }
 
     public void Emit()
@@ -42,7 +84,7 @@ public class Inventory
         else
         {
             var newInventoryItem = new InventoryItem();
-            newInventoryItem.AddAmount(amount);
+            newInventoryItem.inventoryItemSO = inventoryItemSO;
 
             inventoryItems.Add(newInventoryItem);
 
@@ -102,5 +144,32 @@ public class Inventory
         }
 
         return last;
+    }
+
+    public void TakeFromOtherInventory(Inventory inventory)
+    {
+        foreach (var item in inventory.inventoryItems)
+        {
+            AddInventoryItem(item.inventoryItemSO, item.amount);
+        }
+    }
+
+    public void Clear()
+    {
+        inventoryItems.Clear();
+        inventoryItemsSubject.OnNext(inventoryItems);
+        Emit();
+    }
+
+    public void ApplySave(InventorySaveDto data, ItemsFeederSO itemsFeederSO)
+    {
+        Clear();
+
+        foreach (var item in data.inventoryItems)
+        {
+            var so = itemsFeederSO.FindByName(item.itemName);
+
+            AddInventoryItem(so, item.amount);
+        }
     }
 }

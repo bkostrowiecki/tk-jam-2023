@@ -9,6 +9,7 @@ public enum InventoryItemType
 [CreateAssetMenu(fileName = "InventoryItemSO", menuName = "tk-jam-2023/InventoryItemSO", order = 0)]
 public class InventoryItemSO : ScriptableObject
 {
+    public string itemName;
     [TextArea]
     public string description;
     public Sprite icon;
