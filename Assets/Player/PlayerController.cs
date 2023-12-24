@@ -131,10 +131,15 @@ public class PlayerController : MonoBehaviour
             stream.Close();
 
             inventory.ApplySave(data, itemsFeederSO);
-        }
 
-        SetWeapon(selectedWeaponSO);
-        SetPotion(selectedPotionSO);
+            SetWeapon(itemsFeederSO.FindByName(data.selectedWeapon));
+            SetPotion(itemsFeederSO.FindByName(data.selectedPotion));
+        }
+        else
+        {
+            SetWeapon(selectedWeaponSO);
+            SetPotion(selectedPotionSO);
+        }
 
         inventory.Emit();
     }
@@ -145,7 +150,12 @@ public class PlayerController : MonoBehaviour
 
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
-        formatter.Serialize(stream, inventory.InventorySaveDto);
+
+        var saveDto = inventory.InventorySaveDto;
+        saveDto.selectedWeapon = selectedWeaponSO?.itemName;
+        saveDto.selectedPotion = selectedPotionSO?.itemName;
+
+        formatter.Serialize(stream, saveDto);
         stream.Close();
     }
 

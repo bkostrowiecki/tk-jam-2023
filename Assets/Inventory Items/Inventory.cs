@@ -6,6 +6,8 @@ using UniRx;
 public class InventorySaveDto
 {
     public List<InventoryItemSaveDto> inventoryItems = new();
+    public string selectedWeapon;
+    public string selectedPotion;
 }
 
 [Serializable]

@@ -98,7 +98,6 @@ MonoBehaviour:
   meshColor: {r: 1, g: 0.9584457, b: 0, a: 0.18431373}
   objects:
   - {fileID: 0}
-  - {fileID: 0}
   scanFrequency: 30
   layers:
     serializedVersion: 2
@@ -148,8 +147,8 @@ Transform:
   m_GameObject: {fileID: 772962877057853584}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.709, z: 0.932}
-  m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
+  m_LocalPosition: {x: 0, y: 0.709, z: 0.667}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3652332533461701738}
@@ -5821,7 +5820,7 @@ MonoBehaviour:
     acceleration: 0
   chasingEnemyState: {fileID: 7354826291144100588}
   returnEnemyState: {fileID: 4349115326529475661}
-  hitDistance: 1.25
+  hitDistance: 0.5
   hitTime: 2
   hitAnimationCurve:
     serializedVersion: 2

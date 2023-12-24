@@ -19,6 +19,6 @@ public class RestartOnFire : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(timeToRestart);
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("Splash");
     }
 }
