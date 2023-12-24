@@ -2398,6 +2398,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2010215347926189660, guid: 2fe04b34c5885b7489487b1bfdbe691e,
+        type: 3}
+      propertyPath: m_Name
+      value: Rag Damage Multiplier Sacrifice
+      objectReference: {fileID: 0}
     - target: {fileID: 2949321119468235894, guid: 2fe04b34c5885b7489487b1bfdbe691e,
         type: 3}
       propertyPath: m_IsActive
@@ -2420,9 +2425,25 @@ PrefabInstance:
       objectReference: {fileID: 1905877656}
     - target: {fileID: 4636861869826535093, guid: 2fe04b34c5885b7489487b1bfdbe691e,
         type: 3}
+      propertyPath: selectedPotionSO
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4636861869826535093, guid: 2fe04b34c5885b7489487b1bfdbe691e,
+        type: 3}
+      propertyPath: selectedWeaponSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 844b5e03c6f0e6745aae2308e3cde733,
+        type: 2}
+    - target: {fileID: 4636861869826535093, guid: 2fe04b34c5885b7489487b1bfdbe691e,
+        type: 3}
       propertyPath: playerRotationBaseTransform
       value: 
       objectReference: {fileID: 330585546}
+    - target: {fileID: 4636861869826535093, guid: 2fe04b34c5885b7489487b1bfdbe691e,
+        type: 3}
+      propertyPath: inventory.inventoryItems.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4636861869826535093, guid: 2fe04b34c5885b7489487b1bfdbe691e,
         type: 3}
       propertyPath: inventory.inventoryItems.Array.data[0].blood
@@ -2440,9 +2461,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4636861869826535093, guid: 2fe04b34c5885b7489487b1bfdbe691e,
         type: 3}
+      propertyPath: inventory.inventoryItems.Array.data[0].amount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4636861869826535093, guid: 2fe04b34c5885b7489487b1bfdbe691e,
+        type: 3}
       propertyPath: inventory.inventoryItems.Array.data[0].inventoryItemSO
       value: 
-      objectReference: {fileID: 11400000, guid: ad948bb4d47ca67418d8d74c74939ae7,
+      objectReference: {fileID: 11400000, guid: 844b5e03c6f0e6745aae2308e3cde733,
         type: 2}
     - target: {fileID: 4636861869826535093, guid: 2fe04b34c5885b7489487b1bfdbe691e,
         type: 3}
@@ -2497,6 +2523,11 @@ PrefabInstance:
       propertyPath: onDied.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 795546009}
+    - target: {fileID: 7345757327972000817, guid: 2fe04b34c5885b7489487b1bfdbe691e,
+        type: 3}
+      propertyPath: m_Name
+      value: Turkey Sword Damage Multiplier Sacrifice
+      objectReference: {fileID: 0}
     - target: {fileID: 8117366420006399836, guid: 2fe04b34c5885b7489487b1bfdbe691e,
         type: 3}
       propertyPath: m_IsActive
@@ -2505,8 +2536,33 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8690973543671570485, guid: 2fe04b34c5885b7489487b1bfdbe691e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2040759290415492896}
   m_SourcePrefab: {fileID: 100100000, guid: 2fe04b34c5885b7489487b1bfdbe691e, type: 3}
+--- !u!1 &2040759290415492895 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8690973543671570485, guid: 2fe04b34c5885b7489487b1bfdbe691e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2040759290415492893}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2040759290415492896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2040759290415492895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47e0f90edb5d9314d96eb23c074d5fb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponSO: {fileID: 0}
+  playerWalkingState: {fileID: 0}
+  fraction: 0.1
 --- !u!1001 &4630001648076207932
 PrefabInstance:
   m_ObjectHideFlags: 0

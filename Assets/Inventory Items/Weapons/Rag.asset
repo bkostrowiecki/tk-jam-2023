@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Rag
   m_EditorClassIdentifier: 
   itemName: Rag
-  description: Sacrificing this item increases your stamina by 20 points
+  description: Sacrificing Rag increases your base strength by 10%
+  shortDescription: +10% base strength
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   type: 0
   requiredBlood: 50

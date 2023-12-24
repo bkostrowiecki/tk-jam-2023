@@ -96,6 +96,8 @@ public class PlayerController : MonoBehaviour
     private InventoryItem selectedPotion;
 
     public bool shouldStartOver = false;
+    public bool shouldLoad = false;
+    public float damageMultiplier;
 
     void Awake()
     {
@@ -121,7 +123,7 @@ public class PlayerController : MonoBehaviour
         selectedPotionAmountSubject = new BehaviorSubject<int>(inventory.GetInventoryItemAmount(selectedPotionSO));
         selectedWeaponSOSubject = new BehaviorSubject<InventoryItemSO>(selectedWeaponSO);
 
-        if (!shouldStartOver)
+        if (!shouldStartOver && shouldLoad)
         {
             var path = Application.persistentDataPath + "/rogal";
 

@@ -151,7 +151,7 @@ public class InventorySubscriber : MonoBehaviour
         instance.onHover.AddListener(() =>
         {
             currentDescriptionSource = inventoryItem;
-            descriptionTmp.text = inventoryItem.inventoryItemSO.description;
+            descriptionTmp.text = "<b>" + inventoryItem.inventoryItemSO.itemName + "</b>\n" + inventoryItem.inventoryItemSO.description;
         });
 
         instance.offHover.AddListener(() =>

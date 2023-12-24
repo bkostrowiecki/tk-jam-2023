@@ -162,7 +162,7 @@ public class BaseWeaponState : MonoBehaviour
 
             if (killable != null)
             {
-                killable.TakeDamage(new TouchDamage(inventoryItemSO.damage));
+                killable.TakeDamage(new TouchDamage(Mathf.RoundToInt((float)inventoryItemSO.damage * playerController.damageMultiplier)));
 
                 alreadyHandled.Add(collider);
             }

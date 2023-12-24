@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Rake
   m_EditorClassIdentifier: 
   itemName: Rake
-  description: Sacrificing this item increases your stamina by 20 points
+  description: Sacrificing this item increases stamina efficiency by 33%
+  shortDescription: +33% stamina efficiency
   icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   type: 0
   requiredBlood: 30

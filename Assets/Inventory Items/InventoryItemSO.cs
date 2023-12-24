@@ -12,6 +12,8 @@ public class InventoryItemSO : ScriptableObject
     public string itemName;
     [TextArea]
     public string description;
+    [TextArea]
+    public string shortDescription;
     public Sprite icon;
     public InventoryItemType type;
 

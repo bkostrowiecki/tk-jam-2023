@@ -11,6 +11,10 @@ public class Sacrifice : MonoBehaviour
     public string animationJumpSacrificeTrigger;
     public string animationFinishSacrificeTrigger;
 
+    [Header("Effects")]
+    public GameObject effectsContainer;
+    public FloatingTextSpawner floatingTextSpawner;
+
     [Header("Sacrifice parameter")]
     public float sacrificeJumpTime;
     public float sacrificeDoneTime;
@@ -28,8 +32,27 @@ public class Sacrifice : MonoBehaviour
     public MMF_Player sacrificeFeedbacks;
 
     bool haveUsedWeapon = false;
+    BaseSacrifice[] sacrificeEffects;
 
-    // Update is called once per frame
+    void Awake()
+    {
+        sacrificeEffects = effectsContainer.GetComponentsInChildren<BaseSacrifice>();
+    }
+
+    void ExecuteWeaponSO(InventoryItemSO inventoryItemSO)
+    {
+        FindEffectBySO(inventoryItemSO).Execute();
+
+        floatingTextSpawner.SpawnText(inventoryItemSO.shortDescription);
+    }
+
+    BaseSacrifice FindEffectBySO(InventoryItemSO inventoryItemSO)
+    {
+        var effects = new List<BaseSacrifice>(sacrificeEffects);
+
+        return effects.Find((item) => item.weaponSO == inventoryItemSO);
+    }
+
     void Update()
     {
         if (sacrificeTimer.HasValue)
@@ -73,11 +96,14 @@ public class Sacrifice : MonoBehaviour
 
                 if (!haveUsedWeapon)
                 {
+                    var selectedWeaponSO = playerController.selectedWeaponSO;
+
                     playerController.UseWeapon();
                     haveUsedWeapon = true;
 
                     if (sacrificeTarget != null)
                     {
+                        ExecuteWeaponSO(selectedWeaponSO);
                         sacrificeTarget.GetComponent<Sacrificable>().MakeLayDead();
                     }
 
